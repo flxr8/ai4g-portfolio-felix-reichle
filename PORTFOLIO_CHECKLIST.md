@@ -27,14 +27,15 @@ Tick every box before you submit. Edit this file and put an `x` between the brac
 
 ## 3. Hackathon prototypes (Weeks 1-7)
 For each week: the **code** of the prototype **and** the **slides** made that week.
+Also write down, in that week's `README.md`, which tool and which SDG you were given.
 
-- [ ] Week 1 - Bolt.new - SDG 4
-- [ ] Week 2 - N8N - SDG 3
-- [ ] Week 3 - Claude / OpenAI API - SDG 10
-- [ ] Week 4 - ComfyUI - SDG 13
-- [ ] Week 5 - ElevenLabs + Whisper - SDG 4/10
-- [ ] Week 6 - Cursor / Claude Code / Antigravity - SDG 9
-- [ ] Week 7 - Roboflow - SDG 15 (or 14)
+- [ ] Week 1 - code + slides + tool/SDG noted
+- [ ] Week 2 - code + slides + tool/SDG noted
+- [ ] Week 3 - code + slides + tool/SDG noted
+- [ ] Week 4 - code + slides + tool/SDG noted
+- [ ] Week 5 - code + slides + tool/SDG noted
+- [ ] Week 6 - code + slides + tool/SDG noted
+- [ ] Week 7 - code + slides + tool/SDG noted
 
 ## 4. Three individual learning goals for Term 2
 - [ ] Learning Goal 1 written, all five questions answered

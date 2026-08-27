@@ -1,8 +1,5 @@
 # Term 1 - Week 2: Loops & Functions
 
-**Friday hackathon tool:** N8N  
-**SDG:** SDG 3 - Good Health & Well-being
-
 ---
 
 ## 1. Homework & workshop assignments -> [`homework/`](homework/)
@@ -23,13 +20,16 @@ _List the files, or link to them. Notebook exports, screenshots, scripts._
 
 ## 2. Hackathon prototype -> [`hackathon/`](hackathon/)
 
+> Your tool and your SDG for this hackathon are announced at the **start of Friday's class**.
+> Write them down here once you know them.
+
 **Project title:**
 
 **My pair partner:**
 
-**Tool used:** N8N
+**Tool we had to use:**
 
-**SDG addressed:** SDG 3 - Good Health & Well-being
+**SDG we had to address:**
 
 **What problem does it solve, and for whom?**
 _Name a real, specific user. "Everyone" is not a user._

@@ -16,7 +16,7 @@ venv/
 env/
 .ipynb_checkpoints/
 
-# --- Node / web apps (Bolt.new, Lovable exports) ---
+# --- Node / web app projects ---
 node_modules/
 dist/
 build/
