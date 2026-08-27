@@ -12,7 +12,7 @@
 
 1. Click the green **Use this template** button at the top of this repository, then **Create a new repository**.
    (If your teacher told you to fork instead, use **Fork** - either works.)
-2. Name it something like `ai4g-portfolio-yourname` and make it **Public** *(or Private - then invite your teacher as a collaborator)*.
+2. Name it something like `ai4g-portfolio-yourname` and make it **Public** *(or Private - then invite your teachers as collaborators)*.
 3. Clone it to your laptop:
    ```bash
    git clone https://github.com/YOUR-USERNAME/ai4g-portfolio-yourname.git
