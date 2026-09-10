@@ -2,9 +2,9 @@
 
 > **This is your portfolio.** Everything you build, hand in and learn during the minor lives here.
 
-- **Name:** _your name here_
-- **Student number:** _your student number here_
-- **Cohort / year:** _e.g. 2026-2027_
+- **Name:** Felix Reichle
+- **Student number:** 26097214
+- **Cohort / year:** 2026-2027
 
 ---
 

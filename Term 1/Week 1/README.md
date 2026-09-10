@@ -23,31 +23,32 @@ _List the files, or link to them. Notebook exports, screenshots, scripts._
 > Your tool and your SDG for this hackathon are announced at the **start of Friday's class**.
 > Write them down here once you know them.
 
-**Project title:**
+**Project title:** Campus Dutch
 
-**My pair partner:**
+**My pair partner:** Rayna Jong
 
-**Tool we had to use:**
+**Tool we had to use:** Bolt
 
-**SDG we had to address:**
+**SDG we had to address:** Quality Education
 
 **What problem does it solve, and for whom?**
-_Name a real, specific user. "Everyone" is not a user._
+International students in the Netherlands can technically get by on English day to day, but academic life runs on a different, more specific vocabulary: exam regulations, deadline notices, teacher communication, grading criteria. General courses like Duolingo teach everyday conversational Dutch, not this technical layer, which leaves students functional in class but at risk of missing or misreading things that actually matter for their studies. Campus Dutch targets that specific gap: the practical, academic-administrative vocabulary students need, not general language learning.
 
 **What did you build?**
-_Two or three sentences. What can a user actually do with it?_
+A web app that teaches international students the Dutch vocabulary and phrases needed for academic life at university: Exams, Deadlines, Rules, Teachers, Classes, Grades and Schedules. Each topic has a dialogue walkthrough and flashcards to learn the phrases, followed by a quiz to check understanding. Cards use a Leitner spaced-repetition system: correct answers push a quiz to a longer review interval, incorrect answers reset it, so phrases resurface across multiple days instead of only being tested once immediately after learning them. A daily "Today's Review" queue reminds you to re-take quizzes you already completed previously. The app also supports multiple languages to learn from (This is not fully implemented as generating content in multiple languages would have used too many tokens).
 
 **Link to the live thing (if any):**
-_Deployed URL, workflow export, video demo - whatever proves it works._
+Live: https://campus-dutch-learnin-gf93.bolt.host/
+GitHub: https://github.com/raynajong/campus-dutch
 
 **How do I run it?**
-_Short instructions so someone else can start it._
+Open the deployed link, go into demo mode (toggle on the top right of the screen) to see what real progress would look like.
 
 **Who did what?**
-_Be honest about the split of work between you and your partner._
+We created the base of the project together on Friday. We both came up with small changes to further improve the app. Rayna implemented those while I focused on creating our slides. We both took turns doing the final polish of the project.
 
 **Ethical reflection - what are the risks of your tool? Who could it harm?**
-_Every hackathon requires this. One honest paragraph beats three vague ones._
+One risk is over-reliance: a student could treat completing the app as equivalent to actually being able to navigate real Dutch academic administration, when the app's vocabulary is only a small slice of what's needed in practice. This could give false confidence in a moment that actually matters, like misreading a resit deadline or an appeal procedure. There's also a coverage risk: the phrases are hand-picked by two students, not checked across every faculty, and regulations and terminology can differ by institution, so the app could miss programme-specific phrasing and leave some students underprepared for their actual university's terms. Finally, because progress is stored only in local browser storage, a student who switches devices or clears their browser loses all their progress with no warning, a minor but real harm to trust in the tool.
 
 ### Checklist
 - [ ] Prototype code (or export / workflow file) is in `hackathon/`
