@@ -74,5 +74,7 @@ One risk is over-reliance: a student could treat completing the app as equivalen
 
 **What is the most important thing I learned this week?**
 
+Compacting a broad concept into concrete features and prompts to both make the project solve a specific problem and save tokens.
+
 **Where does this connect to "AI for Good"?**
-_One concrete link to ethics, sustainability or social impact._
+Focussing on what the user actually needs instead of just throwing every possible feature into an app makes it more likely to actually have impact.
