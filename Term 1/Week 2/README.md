@@ -18,36 +18,43 @@ _List the files, or link to them. Notebook exports, screenshots, scripts._
 ---
 
 
-## 2. Hackathon prototype -> [`hackathon/`](hackathon/)
+## 2. Hackathon prototype → [hackathon/](hackathon/)
 
-> Your tool and your SDG for this hackathon are announced at the **start of Friday's class**.
-> Write them down here once you know them.
+*Project title:*
+Flow State
 
-**Project title:**
+*My pair partner:*
+Domile Zukaite
 
-**My pair partner:**
+*Tool we had to use:*
+n8n
 
-**Tool we had to use:**
+*SDG we had to address:*
+SDG 3: Good Health and Well-being
 
-**SDG we had to address:**
+*What problem does it solve, and for whom?*
+Flow State helps busy students and young professionals who want to exercise but struggle to fit physical activity around changing schedules, weather conditions, and daily energy levels. It reduces the effort required to decide when to exercise and whether a run or a walk is more appropriate.
 
-**What problem does it solve, and for whom?**
-_Name a real, specific user. "Everyone" is not a user._
+*What did you build?*
+We built an automated n8n workflow that asks the user to complete a short daily survey about their mood and energy. It checks their Google Calendar and the local weather forecast, uses AI to select a suitable free time and activity, adds the plan to their calendar, and sends them a confirmation email.
 
-**What did you build?**
-_Two or three sentences. What can a user actually do with it?_
+*Link to the live thing (if any):*
+[Add the workflow export, GitHub file, deployed form, or video demo link here]
 
-**Link to the live thing (if any):**
-_Deployed URL, workflow export, video demo - whatever proves it works._
+*How do I run it?*
 
-**How do I run it?**
-_Short instructions so someone else can start it._
+1. Import the workflow into n8n.
+2. Connect the required Google Calendar, Gmail, weather API, and AI credentials.
+3. Update the location and calendar settings if necessary.
+4. Activate the workflow.
+5. Submit the daily mood and energy form.
+6. The workflow will check the user’s calendars and weather conditions, choose an appropriate activity and free time, create a calendar event, and email the final plan.
 
-**Who did what?**
-_Be honest about the split of work between you and your partner._
+*Who did what?*
+We worked together to brainstorm the idea, define the problem, and decide how the automation should work. Felix completed most of the technical development, including building and connecting the n8n workflow. Domile contributed to the planning and design decisions and created the presentation explaining the problem, solution, workflow, SDG relevance, and ethical risks. We tested and refined the overall concept together.
 
-**Ethical reflection - what are the risks of your tool? Who could it harm?**
-_Every hackathon requires this. One honest paragraph beats three vague ones._
+*Ethical reflection – what are the risks of your tool? Who could it harm?*
+Flow State uses sensitive information, including mood, energy, location, and calendar availability, so poor data security could expose private details about the user. Incorrect weather information or an inaccurate AI decision could also result in an unsuitable or unsafe activity recommendation. A delayed or failed workflow might tell the user that an event has been scheduled when it has not. To reduce these risks, the system should collect only the data it needs, protect account credentials, validate the AI’s response, clearly confirm whether calendar creation succeeded, and allow users to reject any suggestion. Flow State should only support everyday activity planning. It should not provide medical advice or replace help from a trusted person or healthcare professional when a user is injured, unwell, or experiencing serious distress.
 
 ### Checklist
 - [ ] Prototype code (or export / workflow file) is in `hackathon/`
