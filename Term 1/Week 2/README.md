@@ -79,6 +79,7 @@ Flow State uses sensitive information, including mood, energy, location, and cal
 ## 4. Reflection
 
 **What is the most important thing I learned this week?**
+Algorithms and especially AI calls can never be fully trusted. They have to be regulated and verified before using them in a production environment. For example, for our project we filtered out genuinely dangerous weather conditions before handing the data over to the AI, aswell as checking if the spot the AI picked is actually safe to hand to the user.
 
 **Where does this connect to "AI for Good"?**
-_One concrete link to ethics, sustainability or social impact._
+Similar to the algorithms shown in the lecture (like face recognition working better for certain skin tones), although in a smaller scale, our product could harm people instead of improving their lives if we just released it unchecked. For products to do genuine good for all users, they need to thoroughly tested on all edge cases. This way we can make sure that it does not actually harm any potential user group.
