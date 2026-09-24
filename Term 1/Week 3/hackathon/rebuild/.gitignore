@@ -1,0 +1,9 @@
+# Local user data - plaintext plans, never commit these
+data/
+*.json.corrupt
+
+# Virtualenv
+.venv/
+
+__pycache__/
+*.py[cod]
