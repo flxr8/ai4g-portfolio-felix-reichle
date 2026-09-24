@@ -90,7 +90,7 @@ Last, the app runs a keyword-based crisis-language check before generating any p
 ## 4. Reflection
 
 **What is the most important thing I learned this week?**
-
+The most important thing I learned is that there is a long way between succesfully calling an AI API and actually building an application surrounding the AI. There are lots of safeguards and mechanisms to consider to go from getting answers to single question to having a full workflow.
 
 **Where does this connect to "AI for Good"?**
 For me the connection is pretty specific. The same flexibility that makes Gemini useful, turning messy free text into a structured plan, is also what makes it risky for exactly this user group, because a confident wrong answer about a legal deadline or a shelter's number costs more for someone with no slack to double-check it than it would for almost anyone else. Reducing inequality here mostly meant getting the AI to admit what it doesn't know: refusing to make up specifics, asking a clarifying question when it needed more information, and failing loudly when something broke so the user actually saw it.
