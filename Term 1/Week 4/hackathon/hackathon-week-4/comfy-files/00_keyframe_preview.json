@@ -1,0 +1,3902 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "DreamShaperXL_Lightning.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "3": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 1
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, wide shot of a healthy coral reef, pink, orange and purple corals, turquoise water, light rays from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1001,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "preview/01_reef_opening_A"
+    }
+  },
+  "8": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, wide shot of a healthy coral reef, pink, orange and purple corals, turquoise water, light rays from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "8",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1101,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "9",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "10",
+        0
+      ],
+      "filename_prefix": "preview/01_reef_opening_B"
+    }
+  },
+  "12": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, wide shot of a healthy coral reef, pink, orange and purple corals, turquoise water, light rays from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1201,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "14": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "15": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "14",
+        0
+      ],
+      "filename_prefix": "preview/01_reef_opening_C"
+    }
+  },
+  "16": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, wide shot of a healthy coral reef, pink, orange and purple corals, turquoise water, light rays from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "16",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1301,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "18",
+        0
+      ],
+      "filename_prefix": "preview/01_reef_opening_D"
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, one bigger and one smaller, chasing each other between corals, turquoise water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "21": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1002,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "22": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "21",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "23": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "22",
+        0
+      ],
+      "filename_prefix": "preview/02_kids_playing_A"
+    }
+  },
+  "24": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, one bigger and one smaller, chasing each other between corals, turquoise water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "25": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "24",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1102,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "26": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "25",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "27": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "26",
+        0
+      ],
+      "filename_prefix": "preview/02_kids_playing_B"
+    }
+  },
+  "28": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, one bigger and one smaller, chasing each other between corals, turquoise water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "29": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "28",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1202,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "30": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "29",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "preview/02_kids_playing_C"
+    }
+  },
+  "32": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, one bigger and one smaller, chasing each other between corals, turquoise water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "33": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "32",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1302,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "34": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "33",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "35": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "34",
+        0
+      ],
+      "filename_prefix": "preview/02_kids_playing_D"
+    }
+  },
+  "36": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two big cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, side by side, smiling warmly, looking to the right, colorful corals behind",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "37": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "36",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1003,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "38": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "37",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "39": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "38",
+        0
+      ],
+      "filename_prefix": "preview/03_parents_smile_A"
+    }
+  },
+  "40": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two big cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, side by side, smiling warmly, looking to the right, colorful corals behind",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "41": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "40",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1103,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "42": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "41",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "43": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "42",
+        0
+      ],
+      "filename_prefix": "preview/03_parents_smile_B"
+    }
+  },
+  "44": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two big cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, side by side, smiling warmly, looking to the right, colorful corals behind",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "45": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "44",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1203,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "46": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "45",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "47": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "46",
+        0
+      ],
+      "filename_prefix": "preview/03_parents_smile_C"
+    }
+  },
+  "48": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two big cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins, side by side, smiling warmly, looking to the right, colorful corals behind",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "49": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "48",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1303,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "50": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "49",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "51": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "50",
+        0
+      ],
+      "filename_prefix": "preview/03_parents_smile_D"
+    }
+  },
+  "52": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "53": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "52",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1005,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "54": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "53",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "55": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "54",
+        0
+      ],
+      "filename_prefix": "preview/04_trash_arrives_A"
+    }
+  },
+  "56": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "57": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "56",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1105,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "58": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "57",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "59": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "58",
+        0
+      ],
+      "filename_prefix": "preview/04_trash_arrives_B"
+    }
+  },
+  "60": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "61": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "60",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1205,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "62": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "61",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "63": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "62",
+        0
+      ],
+      "filename_prefix": "preview/04_trash_arrives_C"
+    }
+  },
+  "64": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "65": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "64",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1305,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "66": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "65",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "67": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "66",
+        0
+      ],
+      "filename_prefix": "preview/04_trash_arrives_D"
+    }
+  },
+  "68": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "69": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "68",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1105,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "70": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "69",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "71": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "70",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "72": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "73": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 408,
+      "height": 344
+    }
+  },
+  "74": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "72",
+        0
+      ],
+      "source": [
+        "73",
+        0
+      ],
+      "x": 304,
+      "y": 112,
+      "operation": "add"
+    }
+  },
+  "75": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "74",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "76": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "71",
+        0
+      ],
+      "mask": [
+        "75",
+        0
+      ]
+    }
+  },
+  "77": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins trapped and tangled in (plastic six-pack rings:1.3) and a (torn plastic bag:1.2) wrapped around its body, sad worried face, surrounded by floating plastic trash, murky green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "78": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "77",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "76",
+        0
+      ],
+      "seed": 1007,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "79": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "78",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "80": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "79",
+        0
+      ],
+      "filename_prefix": "preview/05_horrified_A"
+    }
+  },
+  "81": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "82": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "81",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1105,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "83": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "82",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "84": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "83",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "85": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "86": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 408,
+      "height": 344
+    }
+  },
+  "87": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "85",
+        0
+      ],
+      "source": [
+        "86",
+        0
+      ],
+      "x": 304,
+      "y": 112,
+      "operation": "add"
+    }
+  },
+  "88": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "87",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "89": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "84",
+        0
+      ],
+      "mask": [
+        "88",
+        0
+      ]
+    }
+  },
+  "90": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins trapped and tangled in (plastic six-pack rings:1.3) and a (torn plastic bag:1.2) wrapped around its body, sad worried face, surrounded by floating plastic trash, murky green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "91": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "90",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "89",
+        0
+      ],
+      "seed": 1107,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "92": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "91",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "93": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "92",
+        0
+      ],
+      "filename_prefix": "preview/05_horrified_B"
+    }
+  },
+  "94": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "95": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "94",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1105,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "96": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "95",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "97": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "96",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "98": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "99": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 408,
+      "height": 344
+    }
+  },
+  "100": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "98",
+        0
+      ],
+      "source": [
+        "99",
+        0
+      ],
+      "x": 304,
+      "y": 112,
+      "operation": "add"
+    }
+  },
+  "101": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "100",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "102": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "97",
+        0
+      ],
+      "mask": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins trapped and tangled in (plastic six-pack rings:1.3) and a (torn plastic bag:1.2) wrapped around its body, sad worried face, surrounded by floating plastic trash, murky green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "104": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "103",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "102",
+        0
+      ],
+      "seed": 1207,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "105": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "104",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "106": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "105",
+        0
+      ],
+      "filename_prefix": "preview/05_horrified_C"
+    }
+  },
+  "107": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (crushed plastic bottles:1.3) and (torn plastic bags:1.2) scattered and floating at different heights, messy, tilted, bottle caps and crumpled wrappers, murky green water, no fish",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "108": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "107",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1105,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "109": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "108",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "110": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "109",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "111": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "112": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 408,
+      "height": 344
+    }
+  },
+  "113": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "111",
+        0
+      ],
+      "source": [
+        "112",
+        0
+      ],
+      "x": 304,
+      "y": 112,
+      "operation": "add"
+    }
+  },
+  "114": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "113",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "115": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "110",
+        0
+      ],
+      "mask": [
+        "114",
+        0
+      ]
+    }
+  },
+  "116": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins trapped and tangled in (plastic six-pack rings:1.3) and a (torn plastic bag:1.2) wrapped around its body, sad worried face, surrounded by floating plastic trash, murky green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "116",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "115",
+        0
+      ],
+      "seed": 1307,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "118",
+        0
+      ],
+      "filename_prefix": "preview/05_horrified_D"
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "122": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "121",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "122",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "125": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "126": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "124",
+        0
+      ],
+      "source": [
+        "125",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "127": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "128": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "126",
+        0
+      ],
+      "source": [
+        "127",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "129": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "128",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "130": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "123",
+        0
+      ],
+      "mask": [
+        "129",
+        0
+      ]
+    }
+  },
+  "131": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "131",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "130",
+        0
+      ],
+      "seed": 1006,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "133",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_A"
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "137": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "136",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "137",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "140": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "141": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "139",
+        0
+      ],
+      "source": [
+        "140",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "142": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "143": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "141",
+        0
+      ],
+      "source": [
+        "142",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "144": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "143",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "145": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "138",
+        0
+      ],
+      "mask": [
+        "144",
+        0
+      ]
+    }
+  },
+  "146": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "146",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "145",
+        0
+      ],
+      "seed": 1106,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "148",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_B"
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "152": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "151",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "152",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "155": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "156": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "154",
+        0
+      ],
+      "source": [
+        "155",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "157": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "158": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "156",
+        0
+      ],
+      "source": [
+        "157",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "159": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "158",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "160": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "153",
+        0
+      ],
+      "mask": [
+        "159",
+        0
+      ]
+    }
+  },
+  "161": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "161",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "160",
+        0
+      ],
+      "seed": 1206,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "163",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_C"
+    }
+  },
+  "165": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "166": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "165",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "167": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "166",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "168": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "167",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "169": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "170": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "171": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "169",
+        0
+      ],
+      "source": [
+        "170",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "172": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "173": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "171",
+        0
+      ],
+      "source": [
+        "172",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "174": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "173",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "175": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "168",
+        0
+      ],
+      "mask": [
+        "174",
+        0
+      ]
+    }
+  },
+  "176": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "177": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "176",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "175",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "178": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "177",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "179": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "178",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_D"
+    }
+  },
+  "180": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone in the middle of a vast empty grey ocean, white bleached coral on the seabed, (plastic bottles and bags:1.2) floating, grey water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "181": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "180",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1208,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "182": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "181",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "183": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality, sky, clouds, buildings, houses, boat, ship, land, dry ground, street, water surface, above water, coral, colorful coral, seaweed, plants, sea anemone, algae, bright colors, sun rays, clear blue water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "184": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "182",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "185": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "186": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 304,
+      "height": 288
+    }
+  },
+  "187": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "185",
+        0
+      ],
+      "source": [
+        "186",
+        0
+      ],
+      "x": 360,
+      "y": 136,
+      "operation": "subtract"
+    }
+  },
+  "188": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "187",
+        0
+      ]
+    }
+  },
+  "189": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "188",
+        0
+      ],
+      "blur_radius": 24,
+      "sigma": 8.0
+    }
+  },
+  "190": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "189",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "191": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "184",
+        0
+      ],
+      "mask": [
+        "190",
+        0
+      ]
+    }
+  },
+  "192": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "193": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "192",
+        0
+      ],
+      "negative": [
+        "183",
+        0
+      ],
+      "latent_image": [
+        "191",
+        0
+      ],
+      "seed": 1008,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "194": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "193",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "195": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "194",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "196": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone, sad face, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "197": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "196",
+        0
+      ],
+      "negative": [
+        "183",
+        0
+      ],
+      "latent_image": [
+        "195",
+        0
+      ],
+      "seed": 1015,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.3
+    }
+  },
+  "198": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "197",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "199": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "198",
+        0
+      ],
+      "filename_prefix": "preview/07_last_child_A"
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone in the middle of a vast empty grey ocean, white bleached coral on the seabed, (plastic bottles and bags:1.2) floating, grey water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1208,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "202": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "201",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "203": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality, sky, clouds, buildings, houses, boat, ship, land, dry ground, street, water surface, above water, coral, colorful coral, seaweed, plants, sea anemone, algae, bright colors, sun rays, clear blue water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "204": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "202",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "205": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "206": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 304,
+      "height": 288
+    }
+  },
+  "207": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "205",
+        0
+      ],
+      "source": [
+        "206",
+        0
+      ],
+      "x": 360,
+      "y": 136,
+      "operation": "subtract"
+    }
+  },
+  "208": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "207",
+        0
+      ]
+    }
+  },
+  "209": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "208",
+        0
+      ],
+      "blur_radius": 24,
+      "sigma": 8.0
+    }
+  },
+  "210": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "209",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "211": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "204",
+        0
+      ],
+      "mask": [
+        "210",
+        0
+      ]
+    }
+  },
+  "212": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "213": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "212",
+        0
+      ],
+      "negative": [
+        "203",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ],
+      "seed": 1108,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.95
+    }
+  },
+  "214": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "213",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "215": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "214",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "216": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone, sad face, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "216",
+        0
+      ],
+      "negative": [
+        "203",
+        0
+      ],
+      "latent_image": [
+        "215",
+        0
+      ],
+      "seed": 1115,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.3
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "218",
+        0
+      ],
+      "filename_prefix": "preview/07_last_child_B"
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone in the middle of a vast empty grey ocean, white bleached coral on the seabed, (plastic bottles and bags:1.2) floating, grey water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1208,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "222": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "221",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "223": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality, sky, clouds, buildings, houses, boat, ship, land, dry ground, street, water surface, above water, coral, colorful coral, seaweed, plants, sea anemone, algae, bright colors, sun rays, clear blue water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "224": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "222",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "225": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "226": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 304,
+      "height": 288
+    }
+  },
+  "227": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "225",
+        0
+      ],
+      "source": [
+        "226",
+        0
+      ],
+      "x": 360,
+      "y": 136,
+      "operation": "subtract"
+    }
+  },
+  "228": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "227",
+        0
+      ]
+    }
+  },
+  "229": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "228",
+        0
+      ],
+      "blur_radius": 24,
+      "sigma": 8.0
+    }
+  },
+  "230": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "229",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "231": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "224",
+        0
+      ],
+      "mask": [
+        "230",
+        0
+      ]
+    }
+  },
+  "232": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "233": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "232",
+        0
+      ],
+      "negative": [
+        "223",
+        0
+      ],
+      "latent_image": [
+        "231",
+        0
+      ],
+      "seed": 1208,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "234": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "233",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "235": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "234",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "236": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone, sad face, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "237": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "236",
+        0
+      ],
+      "negative": [
+        "223",
+        0
+      ],
+      "latent_image": [
+        "235",
+        0
+      ],
+      "seed": 1215,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.3
+    }
+  },
+  "238": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "237",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "239": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "238",
+        0
+      ],
+      "filename_prefix": "preview/07_last_child_C"
+    }
+  },
+  "240": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone in the middle of a vast empty grey ocean, white bleached coral on the seabed, (plastic bottles and bags:1.2) floating, grey water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "241": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "240",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1208,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "242": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "241",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "243": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality, sky, clouds, buildings, houses, boat, ship, land, dry ground, street, water surface, above water, coral, colorful coral, seaweed, plants, sea anemone, algae, bright colors, sun rays, clear blue water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "244": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "242",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "245": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "246": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 304,
+      "height": 288
+    }
+  },
+  "247": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "245",
+        0
+      ],
+      "source": [
+        "246",
+        0
+      ],
+      "x": 360,
+      "y": 136,
+      "operation": "subtract"
+    }
+  },
+  "248": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "247",
+        0
+      ]
+    }
+  },
+  "249": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "248",
+        0
+      ],
+      "blur_radius": 24,
+      "sigma": 8.0
+    }
+  },
+  "250": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "249",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "251": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "244",
+        0
+      ],
+      "mask": [
+        "250",
+        0
+      ]
+    }
+  },
+  "252": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "253": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "252",
+        0
+      ],
+      "negative": [
+        "243",
+        0
+      ],
+      "latent_image": [
+        "251",
+        0
+      ],
+      "seed": 1308,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.85
+    }
+  },
+  "254": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "253",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "255": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "254",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "256": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, one tiny cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins alone, sad face, (deep underwater:1.4), everything is under water, murky seabed covered in (piles of plastic trash:1.3), grey rocks, (floating plastic bottles and plastic bags:1.3), (dark murky blue-grey polluted water:1.4), dim gloomy light, lifeless and empty",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "257": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "256",
+        0
+      ],
+      "negative": [
+        "243",
+        0
+      ],
+      "latent_image": [
+        "255",
+        0
+      ],
+      "seed": 1315,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.3
+    }
+  },
+  "258": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "257",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "259": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "258",
+        0
+      ],
+      "filename_prefix": "preview/07_last_child_D"
+    }
+  },
+  "260": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "261": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "260",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1009,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "262": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "261",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "263": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "262",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_A"
+    }
+  },
+  "264": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "265": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "264",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1109,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "266": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "265",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "267": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "266",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_B"
+    }
+  },
+  "268": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "269": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "268",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1209,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "270": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "269",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "271": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "270",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_C"
+    }
+  },
+  "272": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "273": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "272",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1309,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "274": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "273",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "275": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "274",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_D"
+    }
+  }
+}

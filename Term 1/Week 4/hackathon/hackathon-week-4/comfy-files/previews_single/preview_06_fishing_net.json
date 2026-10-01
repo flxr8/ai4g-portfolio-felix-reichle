@@ -1,0 +1,854 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "DreamShaperXL_Lightning.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "3": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 1
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "7": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "6",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "8": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "9": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "10": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "8",
+        0
+      ],
+      "source": [
+        "9",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "11": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "12": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "10",
+        0
+      ],
+      "source": [
+        "11",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "13": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "12",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "14": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "7",
+        0
+      ],
+      "mask": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "14",
+        0
+      ],
+      "seed": 1006,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "17": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "16",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "18": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "17",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_A"
+    }
+  },
+  "19": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "20": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "19",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "21": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "20",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "22": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "21",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "23": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "24": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "25": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "23",
+        0
+      ],
+      "source": [
+        "24",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "26": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "27": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "25",
+        0
+      ],
+      "source": [
+        "26",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "28": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "27",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "29": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "mask": [
+        "28",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "29",
+        0
+      ],
+      "seed": 1106,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "32": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "31",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "33": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "32",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_B"
+    }
+  },
+  "34": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "35": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "34",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "36": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "35",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "37": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "36",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "38": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "39": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "40": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "38",
+        0
+      ],
+      "source": [
+        "39",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "41": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "42": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "40",
+        0
+      ],
+      "source": [
+        "41",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "43": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "42",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "44": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "37",
+        0
+      ],
+      "mask": [
+        "43",
+        0
+      ]
+    }
+  },
+  "45": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "46": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "45",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "44",
+        0
+      ],
+      "seed": 1206,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "47": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "46",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "48": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "47",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_C"
+    }
+  },
+  "49": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, two small cute cartoon (pufferfish:1.3) character, round body, yellow with brown spots, big round eyes, small fins with scared faces in the foreground, a large dark (fishing net:1.2) hanging down above them, grey-green water, coral at the bottom",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "50": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "49",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "51": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "50",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "52": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "51",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "53": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1024,
+      "height": 576
+    }
+  },
+  "54": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 1024,
+      "height": 128
+    }
+  },
+  "55": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "53",
+        0
+      ],
+      "source": [
+        "54",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "56": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 264,
+      "height": 576
+    }
+  },
+  "57": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "55",
+        0
+      ],
+      "source": [
+        "56",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "58": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "57",
+        0
+      ],
+      "left": 48,
+      "top": 48,
+      "right": 48,
+      "bottom": 48
+    }
+  },
+  "59": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "52",
+        0
+      ],
+      "mask": [
+        "58",
+        0
+      ]
+    }
+  },
+  "60": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, a large dark (fishing net:1.4) with a (square mesh grid pattern:1.3) of knotted ropes, hanging down from above, round floats along the top edge of the net, grey-green water",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "61": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "60",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "59",
+        0
+      ],
+      "seed": 1306,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 0.9
+    }
+  },
+  "62": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "61",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "63": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "62",
+        0
+      ],
+      "filename_prefix": "preview/06_fishing_net_D"
+    }
+  }
+}

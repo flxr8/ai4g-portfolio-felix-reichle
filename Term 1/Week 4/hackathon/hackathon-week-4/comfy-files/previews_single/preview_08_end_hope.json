@@ -1,0 +1,270 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "DreamShaperXL_Lightning.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "3": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 1
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1009,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_A"
+    }
+  },
+  "8": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "8",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1109,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "9",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "10",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_B"
+    }
+  },
+  "12": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1209,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "14": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "15": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "14",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_C"
+    }
+  },
+  "16": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "16",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1309,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "18",
+        0
+      ],
+      "filename_prefix": "preview/08_end_hope_D"
+    }
+  }
+}

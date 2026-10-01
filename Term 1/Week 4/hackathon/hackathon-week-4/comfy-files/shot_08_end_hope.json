@@ -1,0 +1,295 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "DreamShaperXL_Lightning.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "row of bottles, lineup, product shot, bottle labels, stickers, fish on labels, balloons, face on object, smiling objects, anthropomorphic trash, red fish, (photo:1.3), (realistic:1.3), photorealistic, 3d render, painterly, watercolor, gradient, detailed texture, school of fish, many fish, fish inside a bottle, balls, beads, candy, human, person, people, man, woman, boy, girl, child, swimmer, diver, mermaid, beach, shore, land, boat, text, watermark, logo, scary, gore, blood, deformed, extra fins, blurry, low quality",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "3": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 576,
+      "batch_size": 1
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "(flat 2D cartoon:1.4), thick black outlines, solid color fills, simple cel shading, (kids TV cartoon style:1.2), clean simple shapes, no texture, underwater scene, close-up of a single small bright green coral sprout on a grey seabed, a soft ray of light from above",
+      "clip": [
+        "1",
+        1
+      ]
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "2",
+        0
+      ],
+      "latent_image": [
+        "3",
+        0
+      ],
+      "seed": 1209,
+      "control_after_generate": "fixed",
+      "steps": 6,
+      "cfg": 2.5,
+      "sampler_name": "dpmpp_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "keyframes/08_end_hope_C"
+    }
+  },
+  "8": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "ltx-video-2b-v0.9.5.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "t5xxl_fp8_e4m3fn.safetensors",
+      "type": "ltxv"
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "A soft ray of light falls on a small green coral sprout. The sprout sways gently and glows brighter. Tiny bubbles rise. The camera slowly pushes in. Flat 2D cartoon animation with thick black outlines and solid colors",
+      "clip": [
+        "9",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "worst quality, inconsistent motion, blurry, jittery, distorted, watermark, text, gore, human, person",
+      "clip": [
+        "9",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "LTXVImgToVideo",
+    "inputs": {
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "11",
+        0
+      ],
+      "vae": [
+        "8",
+        2
+      ],
+      "image": [
+        "6",
+        0
+      ],
+      "width": 512,
+      "height": 288,
+      "length": 73,
+      "batch_size": 1
+    }
+  },
+  "13": {
+    "class_type": "LTXVConditioning",
+    "inputs": {
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "12",
+        1
+      ],
+      "frame_rate": 24.0
+    }
+  },
+  "14": {
+    "class_type": "LTXVScheduler",
+    "inputs": {
+      "steps": 30,
+      "max_shift": 2.05,
+      "base_shift": 0.95,
+      "stretch": true,
+      "terminal": 0.1,
+      "latent": [
+        "12",
+        2
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "positive": [
+        "13",
+        0
+      ],
+      "negative": [
+        "13",
+        1
+      ],
+      "cfg": 3.0
+    }
+  },
+  "16": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1209
+    }
+  },
+  "17": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "18": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "16",
+        0
+      ],
+      "guider": [
+        "15",
+        0
+      ],
+      "sampler": [
+        "17",
+        0
+      ],
+      "sigmas": [
+        "14",
+        0
+      ],
+      "latent_image": [
+        "12",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        0
+      ],
+      "vae": [
+        "8",
+        2
+      ]
+    }
+  },
+  "20": {
+    "class_type": "UpscaleModelLoader",
+    "inputs": {
+      "model_name": "RealESRGAN_x4plus_anime_6B.pth"
+    }
+  },
+  "21": {
+    "class_type": "ImageUpscaleWithModel",
+    "inputs": {
+      "upscale_model": [
+        "20",
+        0
+      ],
+      "image": [
+        "19",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "image": [
+        "21",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "width": 1280,
+      "height": 720,
+      "crop": "disabled"
+    }
+  },
+  "23": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "22",
+        0
+      ],
+      "fps": 24.0
+    }
+  },
+  "24": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "23",
+        0
+      ],
+      "filename_prefix": "shots/08_end_hope",
+      "format": "mp4",
+      "codec": "h264"
+    }
+  }
+}
