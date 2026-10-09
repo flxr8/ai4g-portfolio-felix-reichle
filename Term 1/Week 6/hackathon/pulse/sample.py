@@ -55,7 +55,9 @@ def main() -> int:
 
     out = df.loc[picked].drop(columns=["stratum"]).sort_values("created_at")
     out["human_label"] = ""  # fill with: negative / neutral / positive
-    out.to_csv(args.out, index=False, encoding="utf-8")
+    out["off_topic"] = ""    # "yes" if the post is not about rail at all
+    # utf-8-sig (with BOM) so Excel shows umlauts correctly instead of "Ã¼".
+    out.to_csv(args.out, index=False, encoding="utf-8-sig")
 
     sys.stdout.reconfigure(encoding="utf-8")
     print(f"Wrote {len(out)} items to {args.out}")

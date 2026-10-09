@@ -14,11 +14,11 @@ import json
 import sqlite3
 import sys
 import urllib.error
-import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .config import DB_PATH, load_config
+from .pull import pull
 
 try:
     from zoneinfo import ZoneInfo
@@ -26,11 +26,6 @@ try:
 except Exception:  # noqa: BLE001 - Windows without the tzdata package
     BERLIN = timezone.utc
 
-# The GitHub Actions workflow pushes the database to this branch.
-REMOTE_DB_URL = (
-    "https://raw.githubusercontent.com/flxr8/ai4g-portfolio-felix-reichle/"
-    "bahn-puls-data/pulse.db"
-)
 
 
 def _ts(s: str) -> datetime:
@@ -144,9 +139,8 @@ def main() -> int:
     db_path = DB_PATH
     if args.remote:
         db_path = DB_PATH.with_name("pulse_remote.db")
-        db_path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            urllib.request.urlretrieve(REMOTE_DB_URL, db_path)
+            pull(db_path)
         except urllib.error.HTTPError as e:
             # 404 = the workflow has never published data (no run finished yet,
             # or every run failed before the publish step).

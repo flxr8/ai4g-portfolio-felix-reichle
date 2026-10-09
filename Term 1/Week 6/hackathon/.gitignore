@@ -11,4 +11,8 @@ hf-cache/
 # (git add -f data/pulse.db) for the submission.
 data/*.db
 data/*.db-journal
+data/*.download
 STATUS.md
+
+# SentiWS lexicon is CC BY-NC-SA; downloaded on demand, not redistributed
+eval/sentiws/

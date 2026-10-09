@@ -1,7 +1,7 @@
 # Bahn-Puls: live passenger sentiment for Deutsche Bahn (Bluesky)
 
 > Hackathon, Term 1 Week 6 · SDG 9 (Industry, Innovation and Infrastructure) · pair project
-> Status: collector live since 2026-10-09. Evaluation and dashboard: TODO (Mon–Wed).
+> Status: collector live on GitHub Actions since 2026-10-09. Evaluation code, labelling tool and dashboard built; hand labels TODO.
 
 ## 1. The problem
 Passengers voice delays, crowding, app failures and construction chaos on social media
@@ -56,7 +56,10 @@ TODO (team): link to the specific SDG 9 target(s) your course expects.
 Both run **locally on CPU** via `transformers`, at pinned revisions. No chat-model API is used.
 Labels are normalised to negative / neutral / positive, and label + probability are
 stored for both.
-Evaluation against our own hand labels: TODO (Monday): results in `eval/results.md`.
+**Evaluation** (`python -m pulse.evaluate`): agreement and Cohen's κ against our own hand labels,
+overall and personal vs news, confusion matrices, every disagreement, and a **SentiWS word-list
+baseline** (CC BY-NC-SA 3.0, downloaded on demand, not redistributed) to show what the
+transformers add. Results: TODO, in `eval/results.md` once the 50 items are labelled.
 
 ## 6. Architecture
 ```
@@ -75,7 +78,8 @@ GitHub Actions (cron, every 10 min)
        7. log the run in `runs` (start, end, counts, errors)
   └─ python -m pulse.status → STATUS.md + job summary
   └─ force-push pulse.db + STATUS.md as one commit to `bahn-puls-data`
-Streamlit dashboard (TODO) reads a local copy of pulse.db, read-only.
+python -m pulse.pull → local copy of pulse.db
+streamlit run dashboard.py → read-only dashboard on that copy
 ```
 **Design choices:**
 - *Store first, classify second.* A model failure never loses posts; the next run labels them.
@@ -100,18 +104,37 @@ cp .env.example .env                                    # optional: Bluesky app 
 python -m pulse.collect            # one cycle (first run downloads ~1.5 GB of models)
 python -m pulse.status             # health check of local data/pulse.db
 python -m pulse.status --remote    # health check of the live DB on GitHub
+python -m pulse.pull               # download the live DB -> data/pulse.db
 python -m pulse.sample             # 50 stratified items -> eval/to_label.csv
-python -m pulse.evaluate           # TODO (Monday)
-streamlit run dashboard.py         # TODO (Mon–Wed)
+streamlit run label_app.py         # label them, one post at a time
+python -m pulse.evaluate           # -> eval/results.md, eval/test_table.csv
+streamlit run dashboard.py         # the dashboard
 ```
-Get the live database locally:
-`curl -L -o data/pulse.db https://raw.githubusercontent.com/flxr8/ai4g-portfolio-felix-reichle/bahn-puls-data/pulse.db`
 
 **Scheduler:** [`.github/workflows/bahn-puls-collect.yml`](../../../.github/workflows/bahn-puls-collect.yml)
 (at the repo root, because GitHub only reads workflows there). Bluesky credentials are
 repository secrets `BSKY_HANDLE` and `BSKY_APP_PASSWORD`. Teammate guide: [HANDOFF.md](HANDOFF.md).
 
-## 8. Ethics
+## 8. Dashboard
+`streamlit run dashboard.py` (read-only; English UI; Europe/Berlin times)
+- **Topics against their baseline:** the morning answer. Per topic: negative share in the latest
+  period, its baseline, the change, post count and a status with icon + words
+  (▲ above / ● around / ▼ below / ◌ too few posts / ◌ no baseline yet).
+- **Small multiples, one per topic:** negative share per day (or hour, last 48 h) with the
+  baseline as a dashed line and `n=` next to every point. Points with fewer than 10 posts are
+  grey hollow markers. In the hourly view the counts are in the hover only, because 48 labels
+  per panel are unreadable.
+- **Toggles:** daily/hourly, personal/news/both (personal by default), Model 1/Model 2.
+- **Drill-down:** click a point, or pick day + topic (+ hour), to list the posts behind it with
+  time, text, label, confidence and link.
+- **Baseline definition:** pooled negative share over the previous 7 days, *excluding* the
+  current period (a spike must not raise its own baseline), or all earlier data if shorter.
+  It needs at least 10 earlier posts, otherwise it is blank, as for low-count points.
+- **No translation column.** The open local de→en model (Helsinki-NLP opus-mt-de-en,
+  Apache-2.0) needs the `sentencepiece` package, which is outside our agreed dependencies.
+  Posts are shown in the original German. Limitation.
+
+## 9. Ethics
 - **Data minimisation:** only post text, timestamps and derived fields are stored. No
   handles, DIDs, display names, avatars or follower data. Author info is used in
   memory during a run to detect bots, then discarded (`pulse/filters.py`).
@@ -130,7 +153,7 @@ repository secrets `BSKY_HANDLE` and `BSKY_APP_PASSWORD`. Teammate guide: [HANDO
 - **Model bias:** both models struggle with sarcasm ("Danke, Deutsche Bahn"), and Model 1
   is German-only. See the evaluation.
 
-## 9. What this must NOT be used for
+## 10. What this must NOT be used for
 - **Judging or disciplining individual staff** (train crews, station staff). Posts that
   mention staff are an unverified one-sided account; the tool is about topics, not people.
 - **Claiming a problem is solved because posting stopped.** Fewer posts can mean the
