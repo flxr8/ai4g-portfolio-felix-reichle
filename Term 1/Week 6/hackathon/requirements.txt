@@ -1,0 +1,5 @@
+# Everything: collector + evaluation + dashboard.
+-r requirements-collect.txt
+pandas>=2.2
+streamlit>=1.40
+plotly>=5.24

@@ -1,0 +1,14 @@
+# Secrets
+.env
+
+# Local environment and model caches (models are ~1.5 GB, re-downloadable)
+.venv/
+.hf-cache/
+hf-cache/
+
+# The live database lives on the `bahn-puls-data` branch (see the workflow).
+# Local copies are working files; the final DB is added explicitly
+# (git add -f data/pulse.db) for the submission.
+data/*.db
+data/*.db-journal
+STATUS.md

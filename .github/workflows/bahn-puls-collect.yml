@@ -1,0 +1,133 @@
+# Bahn-Puls collector (Term 1 / Week 6 hackathon)
+#
+# Every 10 minutes: restore the database, run one collection cycle, publish
+# the database and a plain-English STATUS.md to the `bahn-puls-data` branch.
+#
+# Why a separate data branch, force-pushed as a single commit?
+#   * No merge conflicts: nobody else ever commits to that branch, and the
+#     `concurrency` group below guarantees only one run writes at a time.
+#   * No repo bloat: committing a binary SQLite file ~430 times a weekend to
+#     `main` would add hundreds of MB of history to the portfolio repo.
+#   * `main` stays clean for code; the final DB is copied to main for submission.
+# The safety net against losing data is the shrink guard in "Publish data".
+
+name: Bahn-Puls collector
+
+on:
+  schedule:
+    # Minute 3,13,23,... rather than 0,10,20: GitHub's scheduler is busiest on
+    # the hour and delays or drops runs then. Schedules are best-effort anyway.
+    - cron: "3-59/10 * * * *"
+  workflow_dispatch: {}   # "Run workflow" button for manual tests
+
+permissions:
+  contents: write         # needed to push the data branch
+
+concurrency:
+  group: bahn-puls-collector
+  cancel-in-progress: false   # never kill a run that is mid-write
+
+env:
+  DATA_BRANCH: bahn-puls-data
+  HF_HOME: ${{ github.workspace }}/.hf-cache
+  HF_HUB_DISABLE_TELEMETRY: "1"
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: "Term 1/Week 6/hackathon"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: "Term 1/Week 6/hackathon/requirements-collect.txt"
+
+      - name: Install dependencies
+        # CPU-only torch wheel: ~200 MB instead of ~2.5 GB with CUDA libraries.
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-collect.txt
+
+      - name: Restore model cache
+        id: hf-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.HF_HOME }}
+          # Bump the suffix if model revisions in config.yaml change.
+          key: hf-models-bahn-puls-v1
+
+      - name: Restore database from data branch
+        id: restore
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          # ls-remote exit code 2 = branch doesn't exist yet (first ever run).
+          # Any other failure aborts the job, so a network glitch can never
+          # make us start from an empty DB and overwrite the real one.
+          set +e
+          git ls-remote --exit-code --heads origin "$DATA_BRANCH" > /dev/null
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            git fetch --depth=1 origin "$DATA_BRANCH"
+            git show FETCH_HEAD:pulse.db > data/pulse.db
+          elif [ "$rc" -eq 2 ]; then
+            echo "No data branch yet - starting a fresh database."
+          else
+            echo "Could not reach the data branch (exit $rc); aborting." && exit 1
+          fi
+          echo "before=$(python -m pulse.status --count)" >> "$GITHUB_OUTPUT"
+
+      - name: Collect
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: python -m pulse.collect
+
+      - name: Status report
+        if: always() && steps.restore.outcome == 'success'
+        run: |
+          python -m pulse.status --markdown STATUS.md
+          cat STATUS.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish data
+        # always(): even a failed collection writes a `runs` row with its
+        # errors, and that record is what proves (or disproves) continuity.
+        if: always() && steps.restore.outcome == 'success'
+        env:
+          BEFORE: ${{ steps.restore.outputs.before }}
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          after=$(python -m pulse.status --count)
+          if [ "$after" -lt "$BEFORE" ]; then
+            echo "Refusing to publish: item count dropped from $BEFORE to $after." && exit 1
+          fi
+          tmp=$(mktemp -d)
+          cp data/pulse.db STATUS.md "$tmp/"
+          cd "$tmp"
+          git init -q -b "$DATA_BRANCH"
+          git config user.name "bahn-puls-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pulse.db STATUS.md
+          git commit -q -m "data: $after items ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:$DATA_BRANCH"
+          echo "Published $after items."
+
+      - name: Save model cache
+        # Saved separately so the cache is stored even if collection failed
+        # after the models downloaded; only on a miss, since keys are immutable.
+        if: always() && steps.hf-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.HF_HOME }}
+          key: hf-models-bahn-puls-v1

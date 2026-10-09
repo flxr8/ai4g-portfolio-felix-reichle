@@ -1,0 +1,9 @@
+# Minimal set for the collector and status check (what GitHub Actions installs).
+# torch is installed separately in CI from the CPU-only index; locally use:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.6          # >=2.6 loads .bin weights with weights_only=True (safe)
+transformers>=4.45,<6
+atproto>=0.0.60
+pyyaml>=6.0
+python-dotenv>=1.0
+tzdata               # Europe/Berlin times on Windows, which has no tz database
