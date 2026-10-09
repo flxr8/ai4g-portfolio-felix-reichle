@@ -4,7 +4,7 @@
     python -m pulse.status --remote    # download the latest DB from GitHub first
     python -m pulse.status --markdown STATUS.md   # also write a Markdown copy
 
-Written for a teammate who doesn't code: every line is a sentence, and the
+Readable without opening the code: every line is a sentence, and the
 last line is a single verdict, "OK" or "PROBLEM: message your teammate".
 """
 from __future__ import annotations

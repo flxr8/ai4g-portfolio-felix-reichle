@@ -1,5 +1,5 @@
 # Bahn-Puls configuration.
-# Everything a non-programmer might want to tune lives here, so changing a
+# Everything worth tuning lives here, so changing a
 # query or keyword never requires touching Python code.
 
 # ---------------------------------------------------------------------------
