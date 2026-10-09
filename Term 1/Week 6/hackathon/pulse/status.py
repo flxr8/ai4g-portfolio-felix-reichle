@@ -13,6 +13,7 @@ import argparse
 import json
 import sqlite3
 import sys
+import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -144,7 +145,20 @@ def main() -> int:
     if args.remote:
         db_path = DB_PATH.with_name("pulse_remote.db")
         db_path.parent.mkdir(parents=True, exist_ok=True)
-        urllib.request.urlretrieve(REMOTE_DB_URL, db_path)
+        try:
+            urllib.request.urlretrieve(REMOTE_DB_URL, db_path)
+        except urllib.error.HTTPError as e:
+            # 404 = the workflow has never published data (no run finished yet,
+            # or every run failed before the publish step).
+            print(f"Could not download the live database (HTTP {e.code}).")
+            if e.code == 404:
+                print("The collector has not published any data yet. If it has been running "
+                      "for more than an hour, check the Actions tab on GitHub.")
+            print("\nVERDICT: PROBLEM: message your teammate")
+            return 0
+        except urllib.error.URLError as e:
+            print(f"Could not reach GitHub ({e.reason}). Check your internet connection and try again.")
+            return 0
 
     if args.count:
         try:
