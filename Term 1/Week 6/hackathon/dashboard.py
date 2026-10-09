@@ -2,8 +2,8 @@
 
     streamlit run dashboard.py
 
-Reads data/pulse.db (get the live copy with `python -m pulse.pull` or the
-refresh button in the sidebar). The dashboard never writes to the database and
+Reads data/pulse.db and downloads the live copy from the data branch when the
+local one is missing or more than 10 minutes old. The dashboard never writes to the database and
 has no free-text input that produces answers: it is a chart and a table, not a
 chatbot.
 """
@@ -53,14 +53,33 @@ with st.sidebar:
             st.error(f"Download failed: {e}")
 
 
-@st.cache_data(ttl=600)
+# Auto-refresh: if the local copy is missing or older than this, download the
+# live DB first. This is what keeps a hosted copy of the dashboard (Streamlit
+# Cloud, where data/ starts empty) in step with the collector.
+MAX_AGE_SECONDS = 600
+
+
+def ensure_fresh_db() -> None:
+    import time
+    if DB_PATH.exists() and time.time() - DB_PATH.stat().st_mtime < MAX_AGE_SECONDS:
+        return
+    from pulse.pull import pull
+    try:
+        pull()
+    except Exception as e:  # noqa: BLE001 - fall back to whatever copy we have
+        if not DB_PATH.exists():
+            st.error(f"No data yet and the download failed ({e}). Try again in a few minutes.")
+            st.stop()
+        st.sidebar.warning("Couldn't refresh from GitHub; showing the last downloaded copy.")
+
+
+@st.cache_data(ttl=MAX_AGE_SECONDS)
 def get_data(_mtime: float):
+    # _mtime is part of the cache key, so a new download invalidates the cache.
     return load_items(DB_PATH), load_last_run(DB_PATH)
 
 
-if not DB_PATH.exists():
-    st.error("No data yet. Click **Refresh from GitHub** in the sidebar, or run `python -m pulse.pull`.")
-    st.stop()
+ensure_fresh_db()
 items, last_run = get_data(DB_PATH.stat().st_mtime)
 
 with st.sidebar:

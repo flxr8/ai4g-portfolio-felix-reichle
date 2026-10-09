@@ -130,6 +130,11 @@ repository secrets `BSKY_HANDLE` and `BSKY_APP_PASSWORD`. Teammate guide: [HANDO
 - **Baseline definition:** pooled negative share over the previous 7 days, *excluding* the
   current period (a spike must not raise its own baseline), or all earlier data if shorter.
   It needs at least 10 earlier posts, otherwise it is blank, as for low-count points.
+- **Hosted copy:** Streamlit Community Cloud, entrypoint
+  [`deploy/bahn-puls/streamlit_app.py`](../../../deploy/bahn-puls/streamlit_app.py) (repo root).
+  Community Cloud can't install requirements from a path with spaces, so this launcher sits in
+  a space-free folder with a dashboard-only `requirements.txt` (no torch). It downloads the
+  live DB on start and every 10 minutes.
 - **No translation column.** The open local de→en model (Helsinki-NLP opus-mt-de-en,
   Apache-2.0) needs the `sentencepiece` package, which is outside our agreed dependencies.
   Posts are shown in the original German. Limitation.

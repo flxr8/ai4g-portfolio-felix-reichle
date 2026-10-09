@@ -9,8 +9,10 @@ ever a copy, so nothing is lost.
 """
 from __future__ import annotations
 
+import os
 import sqlite3
 import sys
+import threading
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -25,7 +27,9 @@ REMOTE_DB_URL = (
 
 def pull(dest: Path = DB_PATH) -> Path:
     dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_suffix(".download")
+    # Unique temp name: on a hosted dashboard two viewers can trigger a pull
+    # at the same moment, and they must not write into the same file.
+    tmp = dest.with_suffix(f".{os.getpid()}.{threading.get_ident()}.download")
     urllib.request.urlretrieve(REMOTE_DB_URL, tmp)
     # Check the download is a readable DB before replacing the local copy,
     # so a half-finished download never clobbers a good file.
