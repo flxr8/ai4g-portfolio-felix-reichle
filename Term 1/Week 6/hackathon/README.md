@@ -82,8 +82,8 @@ python -m pulse.pull → local copy of pulse.db
 streamlit run dashboard.py → read-only dashboard on that copy
 ```
 **Collection in practice (9–12 Oct 2026).** GitHub's `schedule` trigger proved unreliable
-for a new workflow: it first fired ~31 h after being added and then only every few hours
-(15 runs in 3 days). As a fallback, a teammate ran the identical collector every 10 minutes
+for a new workflow: it first fired ~4 h after being added and then only every 3–10 h
+(14 scheduled runs plus 1 manual in 3 days). As a fallback, a teammate ran the identical collector every 10 minutes
 on his PC (Windows Task Scheduler) from Fri 22:29 to Mon 00:28 UTC: **301 runs, all
 successful, ~50 h without a gap**. The two databases were merged with `python -m pulse.merge`:
 734 posts had been collected by both, with **identical labels, topics and kind in every
