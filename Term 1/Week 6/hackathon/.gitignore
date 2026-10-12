@@ -1,24 +1,11 @@
-# Secrets
 .env
-
-# Local environment and model caches (models are ~1.5 GB, re-downloadable)
 .venv/
 .hf-cache/
-hf-cache/
+__pycache__/
 
-# The live database lives on the `bahn-puls-data` branch (see the workflow).
-# Local copies are working files; the final DB is added explicitly
-# (git add -f data/pulse.db) for the submission.
-data/*.db
-data/*.db-journal
-data/*.download
-STATUS.md
+# The live DB is on the `bahn-puls-data` branch. The workflow force-adds the
+# final copy (data/pulse.db) when collection ends; local copies stay out.
+data/
 
-# SentiWS lexicon is CC BY-NC-SA; downloaded on demand, not redistributed
+# SentiWS is CC BY-NC-SA: downloaded on demand by evaluate.py, not redistributed.
 eval/sentiws/
-
-# Raw inputs from other collectors (merged into pulse.db with `pulse.merge`).
-# The log is UTF-16 PowerShell output with a local user path; the CSV is an
-# exact copy of the partner DB.
-data/*.log
-data/*.csv

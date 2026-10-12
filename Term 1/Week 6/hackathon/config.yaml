@@ -1,286 +1,134 @@
-# Bahn-Puls configuration.
-# Everything worth tuning lives here, so changing a
-# query or keyword never requires touching Python code.
+# Bahn-Puls configuration: queries, filters and topics live here so they can
+# be tuned without touching code.
 
-# ---------------------------------------------------------------------------
-# Search queries (Bluesky app.bsky.feed.searchPosts, sort=latest)
-# ---------------------------------------------------------------------------
-# How Bluesky search behaves (verified 2026-10-09):
-#   * Multi-word queries are an AND of the words, not an exact phrase.
-#   * Precise passenger phrases ("Anschluss verpasst") are high-precision but
-#     rare (~1-5 posts/day each). Broader words ("Deutsche Bahn", "im Zug")
-#     give the volume we need for 300 items in 48 h.
-#
-# needs_context: true  -> the word is ambiguous (e.g. "Verspätung" also means
-#   delayed flights or parcels), so we only keep a post if it ALSO contains a
-#   rail word from `rail_context` below. This trades a little recall for much
-#   better relevance.
-#
-# Rough volumes measured 2026-10-09 (posts/day before filtering) in comments.
+# Bluesky search ANDs the words of a query (no exact phrase). Precise phrases
+# are rare (~1-5 posts/day), broader words give the volume.
 queries:
-  # --- precise passenger phrasing (high precision, low volume) ---
-  - q: "Zug fällt aus"            # ~2/day
-  - q: "Zugausfall"               # ~1/day
-  - q: "Zugausfälle"              # ~3/day
-  - q: "Anschluss verpasst"       # ~1/day
-  - q: "DB Navigator"             # ~3/day
-  - q: "Schienenersatzverkehr"    # ~5/day
-  - q: "ICE Verspätung"           # ~3/day
-  - q: "S-Bahn Ausfall"           # <1/day
-  - q: "Stellwerksstörung"        # <1/day
-  - q: "Weichenstörung"           # ~1/day
-  - q: "Bahnchaos"                # ~1/day
-  - q: "Bahnstreik"               # <1/day (spikes during strikes)
-  - q: "Zugbegleiter"             # ~3/day
-  - q: "Zug voll"                 # ~2/day
-  - q: "Klimaanlage Zug"          # ~1/day
-  # --- medium-volume rail words ---
-  - q: "Deutsche Bahn"            # ~95/day
-  - q: "Deutschlandticket"        # ~24/day
-  - q: "S-Bahn"                   # ~65/day
-  - q: "Regionalbahn"             # ~3/day
-  - q: "Regionalexpress"          # ~2/day
-  - q: "Bahnsteig"                # ~14/day
-  - q: "Bahnfahrt"                # ~3/day
-  - q: "Oberleitung"              # ~6/day
-  - q: "im Zug"                   # ~63/day
-  # --- ambiguous words: kept only with a rail context word ---
-  - q: "Verspätung"               # ~45/day before context filter
-    needs_context: true
-  - q: "Verspätungen"             # ~50/day before context filter
-    needs_context: true
-  - q: "fällt aus"                # ~70/day before context filter
-    needs_context: true
-  - q: "überfüllt"                # ~4/day before context filter
-    needs_context: true
-  - q: "Bahnhof"                  # ~87/day; includes idiom "nur Bahnhof verstehen"
-    needs_context: true
+  - Zug fällt aus
+  - Zugausfall
+  - Zugausfälle
+  - Anschluss verpasst
+  - DB Navigator
+  - Schienenersatzverkehr
+  - ICE Verspätung
+  - S-Bahn Ausfall
+  - Stellwerksstörung
+  - Weichenstörung
+  - Bahnchaos
+  - Bahnstreik
+  - Zugbegleiter
+  - Zug voll
+  - Klimaanlage Zug
+  - Deutsche Bahn
+  - Deutschlandticket
+  - S-Bahn
+  - Regionalbahn
+  - Regionalexpress
+  - Bahnsteig
+  - Bahnfahrt
+  - Oberleitung
+  - im Zug
 
-# A post passes the context check if any of these regexes matches
-# (case-insensitive). \b = word boundary.
-#
-# These are deliberately tighter than plain 'zug' / 'bahn', which would also
-# match Anzug, Umzug, Bezug, Autobahn, Laufbahn, Fahrbahn ...
-rail_context:
-  - '\bzug(s|es)?\b'
-  - '\bzug(ausf|begleit|fahrt|verbind|personal|bindung|teil|führer|chef)'
-  - '(regional|nah|fern|nacht|güter|sonder|ersatz|personen)zug'
-  - 'züge'                # Züge, Fernzüge, Regionalzüge
-  - '\bbahn'              # Bahn, Bahnhof, Bahnsteig, Bahnfahrt
-  - '-bahn'               # S-Bahn, U-Bahn
-  - 'eisenbahn'
-  - '\bice\b'
-  - '\bic\b'
-  - '\b(re|rb|s)\s?\d{1,3}\b'   # line numbers like RE1, RB 23, S8
-  - 'gleis'
-  - '\bhbf\b'
-  - '\bdb\b'
-  - '\bsev\b'
-  - 'stellwerk'
-  - 'fernverkehr'
-  - 'nahverkehr'
-  - 'öpnv'
-  - 'pendel'              # Pendler, pendeln
+# Ambiguous words ("Verspätung" also means flights or parcels): a post found
+# only by these is kept only if it also matches `rail_context`.
+context_queries:
+  - Verspätung
+  - Verspätungen
+  - fällt aus
+  - überfüllt
+  - Bahnhof
 
-# ---------------------------------------------------------------------------
-# Paging limits
-# ---------------------------------------------------------------------------
+# Tighter than plain 'zug'/'bahn', which would match Anzug, Umzug, Autobahn.
+rail_context: ['\bzug(s|es)?\b', '\bzug(ausf|begleit|fahrt|verbind|personal|bindung|teil|führer)',
+               '(regional|nah|fern|nacht|güter|sonder|ersatz)zug', 'züge', '\bbahn', '-bahn',
+               'eisenbahn', '\bice\b', '\bic\b', '\b(re|rb|s)\s?\d{1,3}\b', 'gleis', '\bhbf\b',
+               '\bdb\b', '\bsev\b', 'stellwerk', 'fernverkehr', 'nahverkehr', 'öpnv', 'pendel']
+
 fetch:
-  page_size: 100            # API maximum
-  # On a query's very first run there is no "newest stored post" to stop at,
-  # so we cap how far back we read. Backfilled posts are real posts with their
-  # real created_at; fetched_at shows they were collected later.
-  backfill_hours: 24
-  max_pages_per_query: 5    # hard stop so one busy query can't eat the run
-  request_pause_seconds: 0.3  # be polite to the API
+  backfill_hours: 24        # first run of a query: how far back to read
+  max_pages_per_query: 5    # 100 posts per page
 
-# ---------------------------------------------------------------------------
-# Item filters (applied at fetch time; author info is used in memory only
-# and never written to disk)
-# ---------------------------------------------------------------------------
 filters:
   min_words: 4
-  # createdAt is set by the posting client, so imported posts (e.g. old tweet
-  # archives) arrive today with dates from 2020. Anything created more than
-  # this many days before Bluesky indexed it is not live sentiment: drop it.
-  max_backdate_days: 7
-  # Handle or display-name patterns that signal an automated account.
-  bot_name_patterns:
-    - 'bot\b'
-    - '\bbot'
-    - 'rss'
-    - 'feed'
-    - 'ticker'
-    - 'automat'
-    - '🤖'
-    - 'störungsmelder'
-    - 'verkehrsmeldung'
-  # If one author shows up with more than this many posts in a single fetch
-  # batch, per hour of time covered, we treat it as automated.
+  max_backdate_days: 7      # createdAt is client-set; imported 2020 posts exist
+  bot_name_patterns: ['bot\b', '\bbot', 'rss', 'feed', 'ticker', 'automat', '🤖',
+                      'störungsmelder', 'verkehrsmeldung']
   max_posts_per_author_per_hour: 6
-  # Template detector: if the same text (after removing numbers, links and
-  # hashtags) appears this many times in one batch, it's a status bot.
   template_repeat_threshold: 3
 
-# ---------------------------------------------------------------------------
-# kind = "news" if the post links/embeds one of these domains (subdomains
-# match too), otherwise "personal".
-# ---------------------------------------------------------------------------
-news_domains:
-  # national
-  - tagesschau.de
-  - spiegel.de
-  - zeit.de
-  - sueddeutsche.de
-  - faz.net
-  - bild.de
-  - n-tv.de
-  - welt.de
-  - t-online.de
-  - tagesspiegel.de
-  - focus.de
-  - stern.de
-  - handelsblatt.com
-  - rnd.de
-  - taz.de
-  - fr.de
-  - zdf.de
-  - zdfheute.de
-  - deutschlandfunk.de
-  - dw.com
-  - merkur.de
-  - tz.de
-  - euronews.com
-  # public regional broadcasters
-  - br.de
-  - ndr.de
-  - wdr.de
-  - mdr.de
-  - swr.de
-  - rbb24.de
-  - hr.de
-  - hessenschau.de
-  - sr.de
-  - radiobremen.de
-  - butenunbinnen.de
-  # big regional papers
-  - abendblatt.de
-  - mopo.de
-  - lvz.de
-  - ksta.de
-  - rp-online.de
-  - stuttgarter-zeitung.de
-  - berliner-zeitung.de
-  - morgenpost.de
-  - waz.de
-  - haz.de
-  - weser-kurier.de
-  - nordbayern.de
-  - augsburger-allgemeine.de
-  - mainpost.de
-  - general-anzeiger-bonn.de
-  - wiwo.de
-  # rail trade press / news sites
-  - bahnblogstelle.com
-  - eurailpress.de
-  - railbusiness.de
-  - schiene.de
+# kind = "news" if the post links one of these (subdomains match), else "personal".
+news_domains: [tagesschau.de, spiegel.de, zeit.de, sueddeutsche.de, faz.net, bild.de,
+               n-tv.de, welt.de, t-online.de, tagesspiegel.de, focus.de, stern.de,
+               handelsblatt.com, rnd.de, taz.de, fr.de, zdf.de, zdfheute.de,
+               deutschlandfunk.de, dw.com, merkur.de, tz.de, euronews.com, br.de, ndr.de,
+               wdr.de, mdr.de, swr.de, rbb24.de, hr.de, hessenschau.de, sr.de,
+               radiobremen.de, butenunbinnen.de, abendblatt.de, mopo.de, lvz.de, ksta.de,
+               rp-online.de, stuttgarter-zeitung.de, berliner-zeitung.de, morgenpost.de,
+               waz.de, haz.de, weser-kurier.de, nordbayern.de, augsburger-allgemeine.de,
+               mainpost.de, general-anzeiger-bonn.de, wiwo.de, bahnblogstelle.com,
+               eurailpress.de, railbusiness.de, schiene.de]
 
-# ---------------------------------------------------------------------------
-# Topics. Each keyword is a regex that must start at a word boundary
-# (we prepend \b), matched case-insensitively. So "verspät" matches
-# "Verspätung" and "verspätet"; use "voll\b" to avoid matching "vollständig".
-# An item can have several topics; items matching none get "other".
-# ---------------------------------------------------------------------------
+# Keywords are regexes matched case-insensitively from a word start, so
+# "verspät" matches "Verspätung"; "voll\b" avoids "vollständig".
+# Posts can have several topics; posts matching none are "other".
 topics:
   delay_cancellation:
-    label: "Delays & cancellations"
-    keywords: ['verspät', 'fällt aus', 'fiel aus', 'ausgefallen', 'ausfall',
-               'zugausf', 'entfällt', 'entfallen', 'gestrichen', 'anschluss',
-               'unpünktlich', 'pünktlich', 'störung', 'stellwerk', 'weichen',
-               'oberleitung', 'signalstörung', 'umleitung', 'wartezeit',
-               'stecken geblieben', 'steckengeblieben', 'stehen seit',
-               '\+\s?\d+\s?min', 'minuten später', 'stunden später']
+    label: Delays & cancellations
+    keywords: ['verspät', 'fällt aus', 'fiel aus', 'ausgefallen', 'ausfall', 'zugausf',
+               'entfällt', 'entfallen', 'gestrichen', 'anschluss', 'unpünktlich', 'pünktlich',
+               'störung', 'stellwerk', 'weichen', 'oberleitung', 'umleitung', 'wartezeit',
+               'stecken ?geblieben', 'stehen seit', '\+\s?\d+\s?min', 'minuten später']
   crowding:
-    label: "Crowding"
-    keywords: ['voll\b', 'überfüllt', 'rappelvoll', 'brechend voll', 'stehplatz',
-               'kein sitzplatz', 'keinen sitzplatz', 'kein platz', 'gedränge',
-               'sardinen', 'gequetscht', 'quetsch', 'kurzzug', 'halbe zuglänge',
-               'wagen fehl', 'reservierung', 'reserviert']
+    label: Crowding
+    keywords: ['voll\b', 'überfüllt', 'rappelvoll', 'stehplatz', 'kein(en)? sitzplatz',
+               'kein platz', 'gedränge', 'sardinen', 'quetsch', 'gequetscht', 'kurzzug',
+               'halbe zuglänge', 'wagen fehl', 'reservierung', 'reserviert']
   app_ticket:
-    label: "App & tickets"
-    keywords: ['db navigator', 'navigator', 'app\b', 'ticket', 'fahrkarte',
-               'sparpreis', 'flexpreis', 'bahncard', 'deutschlandticket',
-               'd-ticket', '\d\d[- ]euro[- ]ticket', 'fahrgastrecht',
-               'entschädigung', 'erstattung', 'zugbindung', 'buchung',
+    label: App & tickets
+    keywords: ['navigator', 'app\b', 'ticket', 'fahrkarte', 'sparpreis', 'flexpreis',
+               'bahncard', 'deutschlandticket', 'd-ticket', '\d\d[- ]euro[- ]ticket',
+               'fahrgastrecht', 'entschädigung', 'erstattung', 'zugbindung', 'buchung',
                'gebucht', 'fahrpreis', 'kontrolle', 'kontrolleur']
   construction:
-    label: "Construction & replacement buses"
-    keywords: ['baustelle', 'bauarbeiten', 'sanierung', 'generalsanierung',
-               'sev\b', 'schienenersatz', 'ersatzverkehr', 'ersatzbus',
-               'streckensperrung', 'sperrung', 'gesperrt', 'vollsperrung']
+    label: Construction & replacement buses
+    keywords: ['baustelle', 'bauarbeiten', 'sanierung', 'generalsanierung', 'sev\b',
+               'schienenersatz', 'ersatzverkehr', 'ersatzbus', 'streckensperrung', 'sperrung',
+               'gesperrt', 'vollsperrung']
   strike:
-    label: "Strikes"
-    keywords: ['streik', 'warnstreik', 'bahnstreik', 'gdl\b', 'evg\b',
-               'arbeitskampf', 'tarifverhandl', 'tarifstreit']
+    label: Strikes
+    keywords: ['streik', 'warnstreik', 'gdl\b', 'evg\b', 'arbeitskampf', 'tarifverhandl',
+               'tarifstreit']
   service_cleanliness:
-    label: "Service, cleanliness & comfort"
-    keywords: ['klo\b', 'klos\b', 'toilette', 'wc\b', 'klima', 'heizung',
-               'wlan', 'wifi', 'w-lan', 'internet', 'funkloch', 'empfang',
-               'dreckig', 'schmutz', 'sauber', 'stinkt', 'personal',
-               'zugbegleit', 'schaffner', 'freundlich', 'unfreundlich',
-               'durchsage', 'bordbistro', 'speisewagen', 'aufzug', 'fahrstuhl',
-               'barrierefrei', 'rollstuhl']
+    label: Service, cleanliness & comfort
+    keywords: ['klos?\b', 'toilette', 'wc\b', 'klima', 'heizung', 'wlan', 'wifi', 'w-lan',
+               'internet', 'funkloch', 'empfang', 'dreckig', 'schmutz', 'sauber', 'stinkt',
+               'personal', 'zugbegleit', 'schaffner', '(un)?freundlich', 'durchsage',
+               'bordbistro', 'speisewagen', 'aufzug', 'fahrstuhl', 'barrierefrei', 'rollstuhl']
   other:
-    label: "Other / general"
+    label: Other / general
     keywords: []
 
-# ---------------------------------------------------------------------------
-# Sentiment models. Revisions are pinned to a commit so results are
-# reproducible even if the authors update the model on the Hub.
-# ---------------------------------------------------------------------------
+# Pinned revisions so results are reproducible if the authors update the Hub repo.
 models:
   m1:
-    name: "oliverguhr/german-sentiment-bert"
-    revision: "b1177ff59e305c966836ba2825d3dc2efc53f125"
-    tokenizer: "oliverguhr/german-sentiment-bert"
-    tokenizer_revision: "b1177ff59e305c966836ba2825d3dc2efc53f125"
-    preprocess: "germansentiment"
-    max_length: 512
-    use_safetensors: true    # the repo has model.safetensors
+    name: oliverguhr/german-sentiment-bert
+    revision: b1177ff59e305c966836ba2825d3dc2efc53f125
+    tokenizer: oliverguhr/german-sentiment-bert
+    tokenizer_revision: b1177ff59e305c966836ba2825d3dc2efc53f125
+    preprocess: germansentiment
+    use_safetensors: true
   m2:
-    name: "cardiffnlp/twitter-xlm-roberta-base-sentiment"
-    revision: "f2f1202b1bdeb07342385c3f807f9c07cd8f5cf8"
-    # The Cardiff repo ships only the slow sentencepiece file, which would
-    # need the extra `sentencepiece` package. Its sentencepiece.bpe.model is
-    # byte-identical (sha256 cfc8146a...2865) to the base model's, so we load
-    # the base model's fast tokenizer instead: same vocabulary, same token
-    # ids, no extra dependency.
-    tokenizer: "FacebookAI/xlm-roberta-base"
-    tokenizer_revision: "e73636d4f797dec63c3081bb6ed5c7b0bb3f2089"
-    preprocess: "cardiff"
-    max_length: 512
-    # Only pytorch_model.bin exists at this revision. torch>=2.6 loads .bin
-    # files with weights_only=True, so this is safe.
+    name: cardiffnlp/twitter-xlm-roberta-base-sentiment
+    revision: f2f1202b1bdeb07342385c3f807f9c07cd8f5cf8
+    # The Cardiff repo has only the slow sentencepiece tokenizer (needs the extra
+    # `sentencepiece` package). Its sentencepiece.bpe.model is byte-identical to
+    # xlm-roberta-base's, so we use that repo's fast tokenizer: same token ids.
+    tokenizer: FacebookAI/xlm-roberta-base
+    tokenizer_revision: e73636d4f797dec63c3081bb6ed5c7b0bb3f2089
+    preprocess: cardiff
+    # Only a .bin exists; without this, transformers may fetch a safetensors
+    # conversion from an unmerged Hub PR, i.e. outside the pinned revision.
     use_safetensors: false
-  batch_size: 16
-  # Bound the work per run so a backlog can never make a run time out; the
-  # rest is picked up next run.
-  max_items_per_run: 600
 
-# ---------------------------------------------------------------------------
-# Status checks used by `python -m pulse.status`
-# ---------------------------------------------------------------------------
-status:
-  # GitHub's scheduler is best-effort and can delay runs by 10-30 minutes,
-  # so we only raise the alarm after a full hour without a successful run.
-  max_minutes_since_success: 60
-  max_hours_without_new_items: 6
-  max_unclassified_items: 50
-  target_items: 300
-  target_hours: 48
-
-# Privacy: the post URL contains the author's DID (bsky.app/profile/<did>/...).
-# We keep it so the dashboard can link to the original post; set this to
-# false to store no URL at all.
+# The post URL contains the author's DID; set false to store no URL at all.
 store_post_url: true

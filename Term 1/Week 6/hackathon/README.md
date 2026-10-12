@@ -1,181 +1,130 @@
 # Bahn-Puls: live passenger sentiment for Deutsche Bahn (Bluesky)
 
-> Hackathon, Term 1 Week 6 · SDG 9 (Industry, Innovation and Infrastructure) · pair project
-> Status: collector live on GitHub Actions since 2026-10-09. Evaluation code, labelling tool and dashboard built; hand labels TODO.
+Hackathon, Term 1 Week 6 · SDG 9 (Industry, Innovation and Infrastructure) · pair project
 
 ## 1. The problem
-Passengers voice delays, crowding, app failures and construction chaos on social media
-long before these show up in official complaint statistics. A regional customer-
-communication team has to decide **every morning which issue deserves proactive
-communication**, today mostly by gut feeling or by whichever complaint was loudest.
-Bahn-Puls turns the public stream into one signal: *for which topic is negative
-sentiment rising above its own recent baseline, and which posts are behind it?*
-
-TODO (team): one or two sentences with a concrete example from our data
-(e.g. a Stellwerksstörung day).
+Passengers voice delays, crowding, app failures and construction chaos on social media long
+before these show up in complaint statistics. A regional customer-communication team decides
+every morning which issue gets proactive communication, today mostly by gut feeling. Bahn-Puls
+turns the public stream into one signal: **which topic's negative sentiment is rising above its
+own recent baseline, and which posts are behind it?**
 
 ## 2. The stream and Bluesky's terms of use
-- **Source:** Bluesky public search, `app.bsky.feed.searchPosts`, `sort=latest`, 29
-  German queries in [`config.yaml`](config.yaml). Reddit was out of scope (API access
-  needs approval).
-- **Auth (checked 2026-10-09):** search works anonymously via `api.bsky.app` but is
-  blocked (403) on `public.api.bsky.app`. The collector logs in with an **app password**
-  when one is configured and falls back to anonymous access otherwise.
-- **Terms (our reading, TODO verify against the current text):** Bluesky's developer
-  guidelines permit working with public data, ask developers to respect deletions and
-  user intent, and rule out profiling individuals. We store **no author data** (see Ethics). Rate use is ~30–60 requests
-  per 10 minutes, well within the documented limits.
-  TODO (team): link the current Bluesky Developer Guidelines / ToS and quote the
-  relevant lines.
+- **Source:** Bluesky search (`app.bsky.feed.searchPosts`, `sort=latest`) with 29 German queries
+  ([config.yaml](config.yaml)). Reddit was out of scope (API access needs approval).
+- **Viability:** a 3-day test run (9–12 Oct) found ~250 relevant posts per day after filtering,
+  enough for the 300-item requirement within 48 h.
+- **Access:** search works anonymously via `api.bsky.app` (`public.api.bsky.app` returns 403).
+  The collector logs in with an app password (repository secrets) when available.
+- **Terms:** TODO (team): link and quote the current Bluesky developer guidelines. We store no
+  author data, use public posts only, and make ~30 requests per 10 minutes.
 
 ## 3. The user and the decision
-**User:** a regional DB customer-communication team, or a passenger association such
-as Pro Bahn.
-**Decision (daily, morning):** *Which issue gets proactive communication today?*
-**What the tool shows them:** per topic, the share of negative passenger posts per
-day/hour against that topic's 7-day baseline, the number of posts behind every point,
-and the posts themselves.
+**User:** a regional DB customer-communication team, or a passenger association (Pro Bahn).
+**Decision:** every morning, which issue gets proactive communication today.
+**Shown:** per topic, the share of negative passenger posts against that topic's 7-day baseline,
+the number of posts behind every point, and the posts themselves.
 
 ## 4. SDG 9 rationale
-SDG 9.1 calls for "quality, reliable, sustainable and resilient infrastructure … with a
-focus on affordable and equitable access for all". Rail is the backbone of low-carbon
-mobility in Germany, and its *perceived* reliability decides whether people keep using
-it. Bahn-Puls gives infrastructure operators a cheap, continuous, passenger-centred
-feedback channel. It complements punctuality statistics with what the delays mean to the
-people affected (missed connections, overcrowding, inaccessible platforms).
-TODO (team): link to the specific SDG 9 target(s) your course expects.
+SDG 9.1 asks for "quality, reliable, sustainable and resilient infrastructure … with a focus on
+affordable and equitable access for all". Rail is the backbone of low-carbon mobility, and its
+perceived reliability decides whether people keep using it. Bahn-Puls gives operators a cheap,
+continuous, passenger-centred feedback channel: what delays and disruptions mean to the people
+affected, next to punctuality statistics.
 
-## 5. Models (summary; full version in [docs/model_cards.md](docs/model_cards.md))
+## 5. Models and evaluation
 | | Model 1 | Model 2 |
 |---|---|---|
 | | `oliverguhr/german-sentiment-bert` | `cardiffnlp/twitter-xlm-roberta-base-sentiment` |
-| Data | 1.8 M German reviews, tweets, Facebook, Wikipedia | 198 M tweets; sentiment fine-tuned in 8 languages incl. German |
-| Licence | MIT | not stated on Hub (code repo Apache-2.0) |
-| Known limits | weaker on tweets (F1 0.68–0.74); preprocessing strips emojis (sarcasm signal) | no German-specific score on card |
+| Training data | 1.8 M German reviews, tweets, Facebook, Wikipedia | 198 M tweets; sentiment fine-tuned in 8 languages incl. German |
+| Licence | MIT | not stated on the Hub (code repo Apache-2.0) |
 
-Both run **locally on CPU** via `transformers`, at pinned revisions. No chat-model API is used.
-Labels are normalised to negative / neutral / positive, and label + probability are
-stored for both.
-**Evaluation** (`python -m pulse.evaluate`): agreement and Cohen's κ against our own hand labels,
-overall and personal vs news, confusion matrices, every disagreement, and a **SentiWS word-list
-baseline** (CC BY-NC-SA 3.0, downloaded on demand, not redistributed) to show what the
-transformers add. Results: TODO, in `eval/results.md` once the 50 items are labelled.
+Both run locally on CPU via `transformers` at pinned revisions; no chat-model API. Details and
+concerns: [docs/model_cards.md](docs/model_cards.md).
+
+**Evaluation** on 50 hand-labelled posts, stratified by topic and news/personal
+([eval/results.md](eval/results.md)):
+
+| | agreement | Cohen's κ |
+|---|---|---|
+| Model 1 | 50% | 0.11 |
+| Model 2 | 54% | 0.18 |
+| SentiWS word list (baseline) | 54% | 0.25 |
+
+Neither transformer beats a simple word list here. Their main error is reading neutral posts as
+negative (Model 1: 12 of 23 neutral posts), which inflates the negative share. Model 2 is closer
+(48% predicted negative vs 46% by hand), so it is the dashboard default. 18% of sampled posts
+were not about rail at all. Read the dashboard as a trend indicator, not a measurement.
 
 ## 6. Architecture
 ```
-GitHub Actions (cron, every 10 min)
-  └─ python -m pulse.collect
-       1. restore data/pulse.db from branch `bahn-puls-data`
-       2. for each query: page searchPosts (sort=latest) until the per-query
-          watermark (newest indexedAt already seen) or 24 h on first run
-       3. filters (in memory): empty, <4 words, cross-posted RTs, bots
-          (self-label, name pattern, template repeats, posting rate),
-          rail-context check for ambiguous queries
-       4. derive: id = sha256(URI), kind = news|personal (linked domain),
-          topics (German keyword regexes), lang
-       5. INSERT OR IGNORE into items    → idempotent
-       6. classify unlabelled items with Model 1 and Model 2 (batched, CPU)
-       7. log the run in `runs` (start, end, counts, errors)
-  └─ python -m pulse.status → STATUS.md + job summary
-  └─ force-push pulse.db + STATUS.md as one commit to `bahn-puls-data`
-python -m pulse.pull → local copy of pulse.db
-streamlit run dashboard.py → read-only dashboard on that copy
+GitHub Actions (.github/workflows/bahn-puls-collect.yml)
+  one run = ~5.5 h loop:  every 10 min → python -m pulse.collect → publish pulse.db
+  then dispatches its own successor (hourly cron only restarts a broken chain)
+
+python -m pulse.collect  (one cycle)
+  1. searchPosts per query, paging until the stored per-query watermark (newest indexedAt)
+  2. filters, in memory: empty, <4 words, crossposted RTs, bots (self-label, name pattern,
+     repeated templates, posting rate), rail context for ambiguous queries, backdated posts
+  3. derive: id = sha256(URI), kind = news|personal (linked domain), topics (keyword regexes)
+  4. INSERT OR IGNORE → idempotent;  5. classify unlabelled rows with both models
+  6. log the run in `runs` (start, end, counts, errors)
+
+dashboard.py  (Streamlit, read-only) ← pulse.db from the `bahn-puls-data` branch
 ```
-**Collection in practice (9–12 Oct 2026).** GitHub's `schedule` trigger proved unreliable
-for a new workflow: it first fired ~4 h after being added and then only every 3–10 h
-(14 scheduled runs plus 1 manual in 3 days). As a fallback, a teammate ran the identical collector every 10 minutes
-on his PC (Windows Task Scheduler) from Fri 22:29 to Mon 00:28 UTC: **301 runs, all
-successful, ~50 h without a gap**. The two databases were merged with `python -m pulse.merge`:
-734 posts had been collected by both, with **identical labels, topics and kind in every
-case** (deterministic pipeline, pinned models), giving 1,012 unique posts. Each run records
-its `source` machine, so the run log still shows who collected when. The merge also exposed
-6 posts with `createdAt` in 2020–21 (imported archives; Bluesky lets the client set
-`createdAt`), now dropped at fetch time as `backdated`.
-
-**Design choices:**
-- *Store first, classify second.* A model failure never loses posts; the next run labels them.
-- *Separate data branch, single commit.* No merge conflicts with code commits and no
-  repo bloat from ~430 binary DB versions. A guard refuses to publish if the item count
-  ever shrinks.
-- *Watermark on `indexedAt`, not `createdAt`.* Search is ordered by index time, and
-  `createdAt` is set by the client and can be wrong.
-
-**Schema:** `items(id, url, created_at, fetched_at, text, lang, query, kind, topics,
-m1_label, m1_score, m2_label, m2_score)`, `runs(start, end, items_fetched, items_new,
-items_dropped, errors, ok, source)`, `query_state(query, newest_indexed)`.
+**Why it looks like this:**
+- *GitHub's cron is not the clock.* In the test run it fired only every 3–10 h, so each run
+  loops internally and starts the next one itself.
+- *Store first, classify second:* a model failure never loses posts.
+- *Data on its own branch, force-pushed as one commit:* no merge conflicts with code and no
+  history bloat. A guard refuses to publish if the item count shrinks.
+- *Watermark on `indexedAt`:* `createdAt` is client-set (imported posts claim 2020).
 
 ## 7. How to run
 ```bash
 cd "Term 1/Week 6/hackathon"
-python -m venv .venv && .venv/Scripts/activate          # Windows (Linux/macOS: source .venv/bin/activate)
+python -m venv .venv && .venv/Scripts/activate      # Linux/macOS: source .venv/bin/activate
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
-cp .env.example .env                                    # optional: Bluesky app password
+cp .env.example .env                                # optional Bluesky app password
 
-python -m pulse.collect            # one cycle (first run downloads ~1.5 GB of models)
-python -m pulse.status             # health check of local data/pulse.db
-python -m pulse.status --remote    # health check of the live DB on GitHub
-python -m pulse.pull               # download the live DB -> data/pulse.db
-python -m pulse.merge a.db:github-actions b.db:partner-pc --out merged.db   # combine collectors
-python -m pulse.sample             # 50 stratified items -> eval/to_label.csv
-streamlit run label_app.py         # label them, one post at a time
-python -m pulse.evaluate           # -> eval/results.md, eval/test_table.csv
-streamlit run dashboard.py         # the dashboard
+python -m pulse.collect             # one cycle (first run downloads ~1.5 GB of models)
+python -m pulse.evaluate sample     # 50 stratified posts -> eval/to_label.csv
+python -m pulse.evaluate            # labelled CSV -> eval/results.md, eval/test_table.csv
+streamlit run dashboard.py          # fetches the live DB automatically
 ```
-
-**Scheduler:** [`.github/workflows/bahn-puls-collect.yml`](../../../.github/workflows/bahn-puls-collect.yml)
-(at the repo root, because GitHub only reads workflows there). Bluesky credentials are
-repository secrets `BSKY_HANDLE` and `BSKY_APP_PASSWORD`. Teammate guide: [HANDOFF.md](HANDOFF.md).
+Collection runs on GitHub Actions; check it in the repo's **Actions** tab. It stops itself on
+15 Oct, 23:30 Berlin, and commits the final `data/pulse.db` to `main`. The hosted dashboard
+uses [deploy/bahn-puls/streamlit_app.py](../../../deploy/bahn-puls/streamlit_app.py), because
+Streamlit Cloud can't install requirements from a path containing spaces.
 
 ## 8. Dashboard
-`streamlit run dashboard.py` (read-only; English UI; Europe/Berlin times)
-- **Topics against their baseline:** the morning answer. Per topic: negative share in the latest
-  period, its baseline, the change, post count and a status with icon + words
-  (▲ above / ● around / ▼ below / ◌ too few posts / ◌ no baseline yet).
-- **Small multiples, one per topic:** negative share per day (or hour, last 48 h) with the
-  baseline as a dashed line and `n=` next to every point. Points with fewer than 10 posts are
-  grey hollow markers. In the hourly view the counts are in the hover only, because 48 labels
-  per panel are unreadable.
+- **Topics against their baseline:** latest negative share per topic vs its baseline, with
+  status ▲ above / ● around / ▼ below / ◌ too few posts / ◌ no baseline yet.
+- **One chart per topic:** negative share per day (or hour, last 48 h), baseline dashed, `n=`
+  next to every daily point. Points with fewer than 10 posts are hollow grey.
 - **Toggles:** daily/hourly, personal/news/both (personal by default), Model 1/Model 2.
-- **Drill-down:** click a point, or pick day + topic (+ hour), to list the posts behind it with
-  time, text, label, confidence and link.
-- **Baseline definition:** pooled negative share over the previous 7 days, *excluding* the
-  current period (a spike must not raise its own baseline), or all earlier data if shorter.
-  It needs at least 10 earlier posts, otherwise it is blank, as for low-count points.
-- **Hosted copy:** Streamlit Community Cloud, entrypoint
-  [`deploy/bahn-puls/streamlit_app.py`](../../../deploy/bahn-puls/streamlit_app.py) (repo root).
-  Community Cloud can't install requirements from a path with spaces, so this launcher sits in
-  a space-free folder with a dashboard-only `requirements.txt` (no torch). It downloads the
-  live DB on start and every 10 minutes.
-- **No translation column.** The open local de→en model (Helsinki-NLP opus-mt-de-en,
-  Apache-2.0) needs the `sentencepiece` package, which is outside our agreed dependencies.
-  Posts are shown in the original German. Limitation.
+- **Posts behind a point:** pick a day and topic for time, text, label, confidence and link.
+- **Baseline:** pooled negative share over the previous 7 days, excluding the current period
+  (a spike must not hide in its own baseline). It needs ≥ 10 earlier posts, otherwise it's blank.
+- **Limitation:** no English translation. The open local model (opus-mt-de-en) needs the
+  `sentencepiece` package, outside our agreed dependencies.
 
 ## 9. Ethics
-- **Data minimisation:** only post text, timestamps and derived fields are stored. No
-  handles, DIDs, display names, avatars or follower data. Author info is used in
-  memory during a run to detect bots, then discarded (`pulse/filters.py`).
-- **The one exception is the post URL**, which contains the author's DID
-  (`bsky.app/profile/did:plc:…/post/…`). We keep it so users can open the post in
-  context and so deleted posts disappear at the source. Set `store_post_url: false` to
-  turn this off. TODO (team): decide whether to strip URLs before submission.
-- **Public repository:** the database is pushed to a public branch. Posts are public on
-  Bluesky already, but republishing them in bulk is a different act. TODO (team): consider
-  publishing only aggregates or an anonymised export for the final submission.
-- **Deletions:** we do not currently re-check whether stored posts were deleted.
-  Limitation; acceptable for a 1-week dataset, not for long-term use.
-- **Not representative:** Bluesky users skew young, urban, politically engaged and
-  online, and people post when things go wrong. Shares of negative posts are not
-  satisfaction rates.
-- **Model bias:** both models struggle with sarcasm ("Danke, Deutsche Bahn"), and Model 1
-  is German-only. See the evaluation.
+- **Data minimisation:** only text, timestamps and derived fields. No handles, DIDs, names or
+  profile data. Author info is used in memory to detect bots, then discarded.
+- **Exception: the post URL** contains the author's DID. We keep it so readers can check
+  context (`store_post_url: false` turns it off). TODO (team): decide before submission.
+- **Public repo:** the dataset is published with the repo. Posts are public on Bluesky, but
+  republishing them in bulk is a different act.
+- **No deletion sync:** posts deleted on Bluesky stay in our snapshot (acceptable for a one-week
+  dataset, not for long-term use).
+- **Not representative:** Bluesky users skew young, urban and online, and people post when things
+  go wrong.
 
 ## 10. What this must NOT be used for
-- **Judging or disciplining individual staff** (train crews, station staff). Posts that
-  mention staff are an unverified one-sided account; the tool is about topics, not people.
-- **Claiming a problem is solved because posting stopped.** Fewer posts can mean the
-  news cycle moved on, the weather changed, or people gave up complaining.
-- **Profiling or contacting individual passengers.**
-- **Replacing official punctuality data or proper customer surveys.**
-- **Ranking regions or lines on low counts.** Points with fewer than 10 posts are
-  flagged as unreliable on the dashboard.
+- Judging or disciplining individual staff.
+- Claiming a problem is solved because people stopped posting about it.
+- Profiling or contacting individual passengers.
+- Ranking lines or regions on a handful of posts.
+- Replacing punctuality data or proper customer surveys.

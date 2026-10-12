@@ -27,7 +27,7 @@ locally on CPU with `transformers` (see `pulse/sentiment.py`). Sources were read
    and "Danke Deutsche Bahn!" become the same string. Emojis and "?!" are some of the
    strongest sarcasm signals in train complaints, and sarcastic thanks ("Danke, DB") is
    very common in this domain. Expect sarcasm to be read as positive or neutral.
-3. **Model 1 rarely predicts "positive".** In our first 294 items: 8 positive vs. 37
+3. **Model 1 rarely predicts "positive".** In the first 294 test-run posts: 8 positive vs. 37
    for Model 2. Possibly real (people post when things go wrong), possibly a bias
    from the Wikipedia-as-neutral training data. The evaluation will show which.
 4. **Model 2 has no licence stated on the Hub.** For a university hackathon that only
