@@ -23,6 +23,7 @@ class Filters:
     def __init__(self, cfg: dict):
         f = cfg["filters"]
         self.min_words = f["min_words"]
+        self.max_backdate_days = f.get("max_backdate_days", 7)
         self.bot_name_re = re.compile("|".join(f["bot_name_patterns"]), re.IGNORECASE)
         self.max_per_author_hour = f["max_posts_per_author_per_hour"]
         self.template_threshold = f["template_repeat_threshold"]
@@ -105,6 +106,9 @@ class Filters:
             return "too_short"
         if needs_context and not self.rail_context_re.search(text):
             return "no_rail_context"
+        created = post["record"].get("createdAt")
+        if created and (_parse_ts(post["indexedAt"]) - _parse_ts(created)).days > self.max_backdate_days:
+            return "backdated"
         return None
 
     def kind(self, post: dict) -> str:

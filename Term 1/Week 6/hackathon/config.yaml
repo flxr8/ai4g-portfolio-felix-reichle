@@ -100,6 +100,10 @@ fetch:
 # ---------------------------------------------------------------------------
 filters:
   min_words: 4
+  # createdAt is set by the posting client, so imported posts (e.g. old tweet
+  # archives) arrive today with dates from 2020. Anything created more than
+  # this many days before Bluesky indexed it is not live sentiment: drop it.
+  max_backdate_days: 7
   # Handle or display-name patterns that signal an automated account.
   bot_name_patterns:
     - 'bot\b'

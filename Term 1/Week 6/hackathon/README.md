@@ -81,6 +81,17 @@ GitHub Actions (cron, every 10 min)
 python -m pulse.pull → local copy of pulse.db
 streamlit run dashboard.py → read-only dashboard on that copy
 ```
+**Collection in practice (9–12 Oct 2026).** GitHub's `schedule` trigger proved unreliable
+for a new workflow: it first fired ~31 h after being added and then only every few hours
+(15 runs in 3 days). As a fallback, a teammate ran the identical collector every 10 minutes
+on his PC (Windows Task Scheduler) from Fri 22:29 to Mon 00:28 UTC: **301 runs, all
+successful, ~50 h without a gap**. The two databases were merged with `python -m pulse.merge`:
+734 posts had been collected by both, with **identical labels, topics and kind in every
+case** (deterministic pipeline, pinned models), giving 1,012 unique posts. Each run records
+its `source` machine, so the run log still shows who collected when. The merge also exposed
+6 posts with `createdAt` in 2020–21 (imported archives; Bluesky lets the client set
+`createdAt`), now dropped at fetch time as `backdated`.
+
 **Design choices:**
 - *Store first, classify second.* A model failure never loses posts; the next run labels them.
 - *Separate data branch, single commit.* No merge conflicts with code commits and no
@@ -91,7 +102,7 @@ streamlit run dashboard.py → read-only dashboard on that copy
 
 **Schema:** `items(id, url, created_at, fetched_at, text, lang, query, kind, topics,
 m1_label, m1_score, m2_label, m2_score)`, `runs(start, end, items_fetched, items_new,
-items_dropped, errors, ok)`, `query_state(query, newest_indexed)`.
+items_dropped, errors, ok, source)`, `query_state(query, newest_indexed)`.
 
 ## 7. How to run
 ```bash
@@ -105,6 +116,7 @@ python -m pulse.collect            # one cycle (first run downloads ~1.5 GB of m
 python -m pulse.status             # health check of local data/pulse.db
 python -m pulse.status --remote    # health check of the live DB on GitHub
 python -m pulse.pull               # download the live DB -> data/pulse.db
+python -m pulse.merge a.db:github-actions b.db:partner-pc --out merged.db   # combine collectors
 python -m pulse.sample             # 50 stratified items -> eval/to_label.csv
 streamlit run label_app.py         # label them, one post at a time
 python -m pulse.evaluate           # -> eval/results.md, eval/test_table.csv

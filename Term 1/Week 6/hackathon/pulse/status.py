@@ -58,6 +58,10 @@ def build_report(db_path: Path) -> tuple[list[str], bool]:
         runs = conn.execute(
             "SELECT start, end, items_new, errors, ok FROM runs ORDER BY id DESC"
         ).fetchall()
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(runs)")}
+        by_source = conn.execute(
+            "SELECT COALESCE(source, 'unknown'), COUNT(*) FROM runs GROUP BY 1 ORDER BY 2 DESC"
+        ).fetchall() if "source" in cols else []
         unclassified = conn.execute(
             "SELECT COUNT(*) FROM items WHERE m1_label IS NULL OR m2_label IS NULL"
         ).fetchone()[0]
@@ -87,6 +91,8 @@ def build_report(db_path: Path) -> tuple[list[str], bool]:
             f"Goal: {cfg['target_items']} items and {cfg['target_hours']} hours. "
             f"Progress: {total}/{cfg['target_items']} items, {hours:.0f}/{cfg['target_hours']} hours."
         )
+    if by_source:
+        lines.append("Runs per machine: " + ", ".join(f"{src} {n}" for src, n in by_source))
     if ok_runs:
         last_ok = _ts(ok_runs[0][1])
         lines.append(f"Last successful run: {_berlin(last_ok)} ({_ago(last_ok, now)})")

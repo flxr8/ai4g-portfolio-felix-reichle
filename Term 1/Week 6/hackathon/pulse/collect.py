@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sys
 import time
 import traceback
@@ -155,7 +156,12 @@ def main() -> int:
     load_dotenv(PROJECT_DIR / ".env")  # local runs; in CI the env comes from secrets
     cfg = load_config()
     conn = connect()
-    run_id = conn.execute("INSERT INTO runs(start) VALUES (?)", (utcnow_iso(),)).lastrowid
+    # Several machines have run the collector (GitHub Actions, a teammate's
+    # PC); recording which one keeps the run log honest after merging.
+    source = os.getenv("PULSE_SOURCE", "local")
+    run_id = conn.execute(
+        "INSERT INTO runs(start, source) VALUES (?, ?)", (utcnow_iso(), source)
+    ).lastrowid
     conn.commit()
 
     errors: list[str] = []

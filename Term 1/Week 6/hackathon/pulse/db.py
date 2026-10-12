@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS runs (
     items_new      INTEGER DEFAULT 0,  -- rows actually inserted
     items_dropped  INTEGER DEFAULT 0,  -- removed by filters (bots, too short, ...)
     errors         TEXT DEFAULT '[]',  -- JSON list of error messages
-    ok             INTEGER DEFAULT 0   -- 1 if the run reached the API and stored results
+    ok             INTEGER DEFAULT 0,  -- 1 if the run reached the API and stored results
+    source         TEXT                -- which machine ran it, e.g. github-actions / partner-pc
 );
 
 -- Per-query paging watermark: the newest `indexedAt` we have seen for each
@@ -66,4 +67,8 @@ def connect(path: Path = DB_PATH) -> sqlite3.Connection:
     conn = sqlite3.connect(path, timeout=30)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    # Migration for databases created before `runs.source` existed.
+    if "source" not in {r[1] for r in conn.execute("PRAGMA table_info(runs)")}:
+        conn.execute("ALTER TABLE runs ADD COLUMN source TEXT")
+        conn.commit()
     return conn

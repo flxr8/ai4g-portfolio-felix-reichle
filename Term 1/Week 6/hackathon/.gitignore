@@ -16,3 +16,9 @@ STATUS.md
 
 # SentiWS lexicon is CC BY-NC-SA; downloaded on demand, not redistributed
 eval/sentiws/
+
+# Raw inputs from other collectors (merged into pulse.db with `pulse.merge`).
+# The log is UTF-16 PowerShell output with a local user path; the CSV is an
+# exact copy of the partner DB.
+data/*.log
+data/*.csv
