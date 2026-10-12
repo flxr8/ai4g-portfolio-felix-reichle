@@ -1,7 +1,8 @@
 """Bahn-Puls dashboard (read-only): streamlit run dashboard.py
 
-Downloads the live database from the `bahn-puls-data` branch when the local
-copy is missing or older than 10 minutes, so a hosted copy stays current.
+Downloads the live database (config: live_db_url) when the local copy is
+missing or older than 10 minutes, so a hosted copy stays current; falls back
+to the local/committed data/pulse.db if the download fails.
 No free-text input: charts and tables only.
 """
 from __future__ import annotations
@@ -19,7 +20,6 @@ import streamlit as st
 import yaml
 from plotly.subplots import make_subplots
 
-REMOTE_DB = "https://raw.githubusercontent.com/flxr8/ai4g-portfolio-felix-reichle/bahn-puls-data/pulse.db"
 TZ, MIN_N, SERIES, NEUTRAL = "Europe/Berlin", 10, "#2a78d6", "#8a8984"  # grey = "don't over-read this"
 MODELS = {"m2": "Model 2 · twitter-xlm-roberta", "m1": "Model 1 · german-sentiment-bert"}
 
@@ -43,7 +43,7 @@ def load(_stamp: int) -> pd.DataFrame:
         try:
             DB_PATH.parent.mkdir(exist_ok=True)
             tmp = DB_PATH.with_suffix(".download")
-            urllib.request.urlretrieve(REMOTE_DB, tmp)
+            urllib.request.urlretrieve(cfg["live_db_url"], tmp)
             tmp.replace(DB_PATH)
         except Exception:  # noqa: BLE001 - fall back to the copy we have
             if not DB_PATH.exists():

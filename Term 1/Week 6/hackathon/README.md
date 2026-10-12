@@ -93,8 +93,8 @@ python -m pulse.evaluate sample     # 50 stratified posts -> eval/to_label.csv
 python -m pulse.evaluate            # labelled CSV -> eval/results.md, eval/test_table.csv
 streamlit run dashboard.py          # fetches the live DB automatically
 ```
-Collection runs on GitHub Actions; check it in the repo's **Actions** tab. It stops itself on
-15 Oct, 23:30 Berlin, and commits the final `data/pulse.db` to `main`. The hosted dashboard
+Collection runs on GitHub Actions; check it in the repo's **Actions** tab. It keeps running
+(also during grading) until the workflow is disabled there. The hosted dashboard
 uses [deploy/bahn-puls/streamlit_app.py](../../../deploy/bahn-puls/streamlit_app.py), because
 Streamlit Cloud can't install requirements from a path containing spaces.
 

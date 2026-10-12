@@ -132,3 +132,7 @@ models:
 
 # The post URL contains the author's DID; set false to store no URL at all.
 store_post_url: true
+
+# Where the dashboard downloads the live DB (the collector's data branch).
+# In a copy of the project, change the user/repo part to that repo.
+live_db_url: https://raw.githubusercontent.com/flxr8/ai4g-portfolio-felix-reichle/bahn-puls-data/pulse.db

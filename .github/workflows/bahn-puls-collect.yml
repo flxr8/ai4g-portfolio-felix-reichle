@@ -9,8 +9,9 @@
 #
 # Data lives on the `bahn-puls-data` branch as a single force-pushed commit:
 # no merge conflicts with code on main and no history bloat from hundreds of
-# binary DB versions. When the deadline passes, the chain stops and the final
-# DB is committed to main for the submission.
+# binary DB versions. A repo without that branch but with a committed
+# data/pulse.db (e.g. a copy of the project) continues from that file.
+# The chain runs until the workflow is disabled in the Actions tab.
 
 name: Bahn-Puls collector
 
@@ -18,12 +19,12 @@ on:
   workflow_dispatch: {}
   schedule:
     - cron: "17 * * * *"
-  push:   # pushing a workflow change starts the chain immediately
+  push:   # pushing a workflow change (re)starts the chain immediately
     branches: [main]
     paths: [".github/workflows/bahn-puls-collect.yml"]
 
 permissions:
-  contents: write   # push the data branch and the final snapshot
+  contents: write   # push the data branch
   actions: write    # dispatch the next run
 
 concurrency:        # one chain only: extra triggers wait, newest pending wins
@@ -32,7 +33,6 @@ concurrency:        # one chain only: extra triggers wait, newest pending wins
 
 env:
   DATA_BRANCH: bahn-puls-data
-  STOP_AFTER: "2026-10-15T21:30:00Z"   # 23:30 Berlin, half an hour before the deadline
   RUN_MINUTES: "330"
   HF_HOME: ${{ github.workspace }}/.hf-cache
 
@@ -66,8 +66,9 @@ jobs:
       - name: Restore database
         run: |
           mkdir -p data
-          # Exit code 2 = branch doesn't exist (fresh start). Anything else
-          # aborts, so a network glitch can never overwrite the real DB with an empty one.
+          # Exit code 2 = branch doesn't exist yet: keep the committed
+          # data/pulse.db if there is one, otherwise start empty. Any other
+          # failure aborts, so a network glitch can never replace the real DB.
           rc=0; git ls-remote --exit-code --heads origin "$DATA_BRANCH" > /dev/null || rc=$?
           if [ $rc -eq 0 ]; then
             git fetch --depth=1 origin "$DATA_BRANCH" && git show FETCH_HEAD:pulse.db > data/pulse.db
@@ -94,8 +95,7 @@ jobs:
               && published=$n
           }
           published=$(count)
-          end=$(( $(date +%s) + RUN_MINUTES * 60 )); stop=$(date -d "$STOP_AFTER" +%s)
-          if [ $stop -lt $end ]; then end=$stop; fi
+          end=$(( $(date +%s) + RUN_MINUTES * 60 ))
           while [ "$(date +%s)" -lt "$end" ]; do
             t0=$(date +%s)
             # A failed cycle is recorded in the runs table; the loop carries on.
@@ -110,18 +110,4 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "$(date +%s)" -lt "$(date -d "$STOP_AFTER" +%s)" ]; then
-            gh workflow run bahn-puls-collect.yml --ref main --repo "$GITHUB_REPOSITORY"
-          else
-            echo "Deadline reached; not starting another run."
-          fi
-
-      - name: Final snapshot to main
-        if: always()
-        run: |
-          [ "$(date +%s)" -ge "$(date -d "$STOP_AFTER" +%s)" ] && [ -s data/pulse.db ] || exit 0
-          git fetch --depth=1 origin main && git checkout -q -B main FETCH_HEAD
-          git add -f data/pulse.db
-          git -c user.name=bahn-puls-bot -c user.email=actions@users.noreply.github.com commit -qm "Final Bahn-Puls dataset" || exit 0
-          git push origin main
+        run: gh workflow run bahn-puls-collect.yml --ref main --repo "$GITHUB_REPOSITORY"
