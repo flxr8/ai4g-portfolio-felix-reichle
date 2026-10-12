@@ -3,11 +3,28 @@
 Hackathon, Term 1 Week 6 · SDG 9 (Industry, Innovation and Infrastructure) · pair project
 
 ## 1. The problem
+**Why now:** Deutsche Bahn's reliability is at a historic low. In 2025 only 60.1% of
+long-distance trains arrived less than six minutes late, the worst value ever recorded (74.4%
+in 2015) ([ORF](https://orf.at/stories/3416167/)). In September 2026 the figure was 52.4%, and
+the CEO's 2026 target of 60% is out of reach
+([DB](https://www.deutschebahn.com/de/konzern/konzernprofil/zahlen_fakten/puenktlichkeitswerte-6878476),
+[Wirtschaftsticker](https://wirtschaftsticker.com/2026/10/puenktlichkeit-der-fernzuege-verharrt-auf-niedrigem-niveau/)).
+DB attributes this to an unprecedented construction programme, including the full closure of
+Hannover–Berlin since October 2026 ([Dr. Web](https://www.drweb.de/bahn-puenktlichkeit-september-2026-fernverkehr/)),
+and to infrastructure faults. Regional trains fare far better (88.2%). With trust this low,
+communication matters: passengers who are warned early about a closure or a replacement bus are
+frustrated less than those who find out on the platform.
+
 Passengers voice delays, crowding, app failures and construction chaos on social media long
 before these show up in complaint statistics. A regional customer-communication team decides
 every morning which issue gets proactive communication, today mostly by gut feeling. Bahn-Puls
 turns the public stream into one signal: **which topic's negative sentiment is rising above its
 own recent baseline, and which posts are behind it?**
+
+**Example from our data:** TODO (recompute from the final dataset when the project is final):
+negative share per topic, e.g. delays vs. all personal posts, and one topic flagged as unreliable
+because of a low count. In the test run, delay posts were 63% negative against 44% across all
+personal posts, and crowding showed 70% on only 20 posts.
 
 ## 2. The stream and Bluesky's terms of use
 - **Source:** Bluesky search (`app.bsky.feed.searchPosts`, `sort=latest`) with 29 German queries
@@ -16,8 +33,14 @@ own recent baseline, and which posts are behind it?**
   enough for the 300-item requirement within 48 h.
 - **Access:** search works anonymously via `api.bsky.app` (`public.api.bsky.app` returns 403).
   The collector logs in with an app password (repository secrets) when available.
-- **Terms:** TODO (team): link and quote the current Bluesky developer guidelines. We store no
-  author data, use public posts only, and make ~30 requests per 10 minutes.
+- **Terms:** read on 2026-10-12 at [Bluesky Developer Guidelines](https://bsky.network/docs/developer-guidelines/).
+  They forbid spam (automated or bulk interactions such as follows, likes, replies or messages),
+  require services to delete content a user has asked to have deleted, and ask for security
+  measures that protect user data. Our collector is **read-only**: it searches public posts and
+  never posts, likes, follows or messages anyone, so the spam rule is not touched. It stores no
+  author data (see Ethics) and makes about 30 to 60 requests per 10 minutes. The page names no
+  numeric rate limit, so we kept the rate low. The deletion rule is the one we only partly meet
+  (see Ethics).
 
 ## 3. The user and the decision
 **User:** a regional DB customer-communication team, or a passenger association (Pro Bahn).
@@ -31,6 +54,9 @@ affordable and equitable access for all". Rail is the backbone of low-carbon mob
 perceived reliability decides whether people keep using it. Bahn-Puls gives operators a cheap,
 continuous, passenger-centred feedback channel: what delays and disruptions mean to the people
 affected, next to punctuality statistics.
+Targets: [SDG 9.1](https://sdgs.un.org/goals/goal9) (quality, reliable, resilient
+infrastructure) is the main one. 9.4 (upgrading infrastructure to make it sustainable) is a
+secondary fit, because rail is the low-carbon option that people only keep using if it works.
 
 ## 5. Models and evaluation
 | | Model 1 | Model 2 |
@@ -42,19 +68,41 @@ affected, next to punctuality statistics.
 Both run locally on CPU via `transformers` at pinned revisions; no chat-model API. Details and
 concerns: [docs/model_cards.md](docs/model_cards.md).
 
-**Evaluation** on 50 hand-labelled posts, stratified by topic and news/personal
+**Evaluation** on 50 hand-labelled posts from the test run, stratified by topic and
+news/personal. The labeller saw the text only, not the model outputs
 ([eval/results.md](eval/results.md)):
 
 | | agreement | Cohen's κ |
 |---|---|---|
-| Model 1 | 50% | 0.11 |
-| Model 2 | 54% | 0.18 |
-| SentiWS word list (baseline) | 54% | 0.25 |
+| Model 1 | 50% (25/50) | 0.11 |
+| Model 2 | 54% (27/50) | 0.18 |
+| SentiWS word list (baseline) | 54% (27/50) | 0.25 |
 
-Neither transformer beats a simple word list here. Their main error is reading neutral posts as
-negative (Model 1: 12 of 23 neutral posts), which inflates the negative share. Model 2 is closer
-(48% predicted negative vs 46% by hand), so it is the dashboard default. 18% of sampled posts
-were not about rail at all. Read the dashboard as a trend indicator, not a measurement.
+Both transformers are only slightly better than chance on this stream, and the simple word list
+is as good as they are. With 50 posts a difference of a few posts is noise, so we don't claim one
+system is better. The most common error is reading neutral posts as negative (Model 1: 12 of 23
+neutral posts), which inflates the negative share. Model 2 is closer (48% predicted negative vs
+46% by hand), so it is the dashboard default. 9 of the 50 posts (18%) were not about rail at all.
+Read the dashboard as a trend indicator, not a measurement.
+
+**Three failures, explained** (all in [eval/results.md](eval/results.md)):
+1. **Service notices read as neutral.** A replacement-bus notice for line RE30 was labelled
+   negative by us, but both models said neutral (confidence 1.00 and 0.93). The text is a plain
+   announcement with no emotional words; the bad news is in the situation, not the wording.
+2. **Sarcasm and jokes.** A post that mimics a ticket inspector ("Wie kommen Sie bitte darauf,
+   dass ich keine Fahrkarte habe?") was neutral for us, but both models said negative (0.94 and
+   0.86). Model 1's preprocessing also strips emojis, which removes a sarcasm signal.
+3. **Sentiment about something else.** An angry post about a Bundestag vote was rated negative
+   by both models and the word list (0.97 and 0.89), but we labelled it neutral because its tone
+   is not about the railway. That is query noise: the models score the tone of the whole post,
+   not its attitude towards the Bahn.
+
+A smaller case: a joyful post about reaching Linz easily by train was labelled neutral by us but
+positive by all three systems. We think the human label was too strict, so our own labels are
+not a perfect gold standard either.
+
+**What we would do next:** filter off-topic posts before scoring, add a rule or a third model for
+service notices, and label more than 50 posts.
 
 ## 6. Architecture
 ```
@@ -114,11 +162,16 @@ Streamlit Cloud can't install requirements from a path containing spaces.
 - **Data minimisation:** only text, timestamps and derived fields. No handles, DIDs, names or
   profile data. Author info is used in memory to detect bots, then discarded.
 - **Exception: the post URL** contains the author's DID. We keep it so readers can check
-  context (`store_post_url: false` turns it off). TODO (team): decide before submission.
-- **Public repo:** the dataset is published with the repo. Posts are public on Bluesky, but
-  republishing them in bulk is a different act.
-- **No deletion sync:** posts deleted on Bluesky stay in our snapshot (acceptable for a one-week
-  dataset, not for long-term use).
+  context (`store_post_url: false` turns it off).
+- **Public repo:** the database is published on the `bahn-puls-data` branch. Posts are public on
+  Bluesky, but republishing them in bulk is a different act; the branch should be deleted or made
+  private once collection stops after grading.
+- **TODO (team), decide before submission:** commit the full database, or only aggregates plus
+  the 50 labelled posts with their URLs removed (and `store_post_url: false` from then on).
+- **Deletions:** Bluesky's guidelines require services to delete content that users have asked
+  to have deleted. We don't re-check whether stored posts were deleted, so we only partly meet
+  this (acceptable for a one-week dataset, not for long-term use). Anyone who asks us to remove a
+  post can have it deleted from the database.
 - **Not representative:** Bluesky users skew young, urban and online, and people post when things
   go wrong.
 
