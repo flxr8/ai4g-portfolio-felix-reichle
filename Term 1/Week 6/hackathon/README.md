@@ -200,3 +200,37 @@ or locally with `streamlit run dashboard.py`.
 - Profiling or contacting individual passengers.
 - Ranking lines or regions on a handful of posts.
 - Replacing punctuality data or proper customer surveys.
+
+## 11. Team and who did what
+Pair project: Felix Reichle (GitHub `flxr8`) and Lan (Dylan) Dinh Duy (group 12).
+- **Felix:** the collector and its filters, the GitHub Actions scheduler, the Streamlit dashboard
+  and its hosting, the evaluation code, the model cards and the first version of the README.
+- **Dylan:** a second, independent collection run on a laptop (section 12), checks of the data and
+  the sentiment results, the reading of Bluesky's terms, the SDG 9 targets, the results and
+  failure analysis text in this README, and the slides.
+- **Shared:** Felix proposed Bluesky after Reddit refused API access, and we agreed that one data
+  source is enough. The 50 hand labels in `eval/` were written without seeing the model outputs.
+- **AI assistance:** an AI coding assistant (Claude) helped with code, data checks and drafting
+  text. The brief allows this; sentiment is scored only by the two pre-trained models above, never by a chat model.
+
+## 12. Independent collection run on a second machine
+GitHub's scheduler fired only twice in the first hours of the test run, so Dylan also ran the
+same collector (the version from 9 October, before it was merged into one `collect.py`) on his
+laptop with the Windows Task Scheduler, every 10 minutes, with his own Bluesky app password.
+This run is **separate from the shared dataset**: the dashboard and the numbers in sections 1 to 9
+use the shared collector's `data/pulse.db`. It is kept in [`dylan_run/`](dylan_run/) as extra
+evidence that the pipeline ran continuously for the required time.
+
+| | |
+|---|---|
+| Period | 2026-10-10 00:29 to 2026-10-12 02:28 (Berlin time), 50 hours |
+| Runs | 301, all successful, none missed |
+| Posts | 739 (669 personal, 70 news); the first run back-filled 315, then about 10 per hour |
+| Model 1 (german-sentiment-bert) | 338 negative (45.7%), 385 neutral (52.1%), 16 positive (2.2%) |
+| Model 2 (twitter-xlm-roberta) | 319 negative (43.2%), 313 neutral (42.4%), 107 positive (14.5%) |
+| Agreement between the two models | 60.2% |
+
+Files: `dylan_items.csv` (the posts with labels and scores, **without post URLs**, in line with the
+ethics decision above) and `dylan_runs.log` (the collector's own log, one line per cycle and
+one per run). Errors in the log are one-off network timeouts on a single search term.
+The mix of sentiment is similar to the shared dataset: mostly negative or neutral, with few positive posts.
