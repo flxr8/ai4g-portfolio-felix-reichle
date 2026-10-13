@@ -38,6 +38,9 @@ env:
 
 jobs:
   collect:
+    # One collector for both team members' submissions: copies of this project
+    # in other repos read this repo's data branch, so the job is skipped there.
+    if: github.repository == 'flxr8/ai4g-portfolio-felix-reichle'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     defaults:

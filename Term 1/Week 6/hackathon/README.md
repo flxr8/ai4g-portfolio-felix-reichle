@@ -21,10 +21,11 @@ every morning which issue gets proactive communication, today mostly by gut feel
 turns the public stream into one signal: **which topic's negative sentiment is rising above its
 own recent baseline, and which posts are behind it?**
 
-**Example from our data:** TODO (recompute from the final dataset when the project is final):
-negative share per topic, e.g. delays vs. all personal posts, and one topic flagged as unreliable
-because of a low count. In the test run, delay posts were 63% negative against 44% across all
-personal posts.
+**Example from our data** (snapshot of 13 Oct, 586 personal posts): 157 posts were about delays
+and cancellations, and Model 2 rated 55% of them negative, against 38% across all personal posts.
+Construction posts (53) came out at only 28% negative, mostly neutral announcements of closures
+and replacement buses. That is the kind of difference a morning team can act on: delays first,
+and construction notices are information people need rather than a source of anger.
 
 ## 2. The stream and Bluesky's terms of use
 - **Source:** Bluesky search (`app.bsky.feed.searchPosts`, `sort=latest`) with 29 German queries
@@ -141,8 +142,12 @@ python -m pulse.evaluate sample     # 50 stratified posts -> eval/to_label.csv
 python -m pulse.evaluate            # labelled CSV -> eval/results.md, eval/test_table.csv
 streamlit run dashboard.py          # fetches the live DB automatically
 ```
-Collection runs on GitHub Actions; check it in the repo's **Actions** tab. It keeps running
-(also during grading) until the workflow is disabled there. The hosted dashboard
+**One collector for both submissions.** The collector runs on GitHub Actions in
+[flxr8/ai4g-portfolio-felix-reichle](https://github.com/flxr8/ai4g-portfolio-felix-reichle/actions)
+and keeps running during grading. Copies of this project in a team member's repo read that
+repo's live data (`live_db_url` in `config.yaml`); the workflow is skipped there, so there is only
+one dataset. `data/pulse.db` is the committed snapshot; the dashboard falls back to it if the live
+data can't be downloaded. The `runs` table in the database is the proof of continuous operation. The hosted dashboard
 uses [deploy/bahn-puls/streamlit_app.py](../../../deploy/bahn-puls/streamlit_app.py), because
 Streamlit Cloud can't install requirements from a path containing spaces.
 
