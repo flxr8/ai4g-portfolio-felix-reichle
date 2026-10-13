@@ -63,6 +63,7 @@ def shares(df: pd.DataFrame, model: str, freq: str) -> pd.DataFrame:
     d = df[df[f"{model}_label"].notna()].assign(period=lambda x: x.created_at.dt.floor(freq),
                                                 neg=lambda x: x[f"{model}_label"] == "negative")
     rows = pd.concat([d.assign(topic="all"), d.explode("topics").rename(columns={"topics": "topic"})])
+    rows = rows[rows.topic.isin(TOPICS)]  # ignore tags from an older config until the collector re-tags
     periods = pd.date_range(d.period.min(), d.period.max(), freq=freq)
     window = 7 if freq == "D" else 168
     out = []

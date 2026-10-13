@@ -78,11 +78,20 @@ topics:
                'entfällt', 'entfallen', 'gestrichen', 'anschluss', 'unpünktlich', 'pünktlich',
                'störung', 'stellwerk', 'weichen', 'oberleitung', 'umleitung', 'wartezeit',
                'stecken ?geblieben', 'stehen seit', '\+\s?\d+\s?min', 'minuten später']
-  crowding:
-    label: Crowding
-    keywords: ['voll\b', 'überfüllt', 'rappelvoll', 'stehplatz', 'kein(en)? sitzplatz',
+  # Crowding and service were separate topics, but each got only ~6 personal
+  # posts/day, so their daily points never reached the 10-post minimum. Together
+  # (~12/day) they clear it, and they form one theme: what the ride itself is like.
+  onboard:
+    label: On-board experience (crowding, comfort, service)
+    keywords: [# crowding
+               'voll\b', 'überfüllt', 'rappelvoll', 'stehplatz', 'kein(en)? sitzplatz',
                'kein platz', 'gedränge', 'sardinen', 'quetsch', 'gequetscht', 'kurzzug',
-               'halbe zuglänge', 'wagen fehl', 'reservierung', 'reserviert']
+               'halbe zuglänge', 'wagen fehl', 'reservierung', 'reserviert',
+               # comfort, cleanliness, staff
+               'klos?\b', 'toilette', 'wc\b', 'klima', 'heizung', 'wlan', 'wifi', 'w-lan',
+               'internet', 'funkloch', 'empfang', 'dreckig', 'schmutz', 'sauber', 'stinkt',
+               'personal', 'zugbegleit', 'schaffner', '(un)?freundlich', 'durchsage',
+               'bordbistro', 'speisewagen', 'aufzug', 'fahrstuhl', 'barrierefrei', 'rollstuhl']
   app_ticket:
     label: App & tickets
     keywords: ['navigator', 'app\b', 'ticket', 'fahrkarte', 'sparpreis', 'flexpreis',
@@ -94,16 +103,13 @@ topics:
     keywords: ['baustelle', 'bauarbeiten', 'sanierung', 'generalsanierung', 'sev\b',
                'schienenersatz', 'ersatzverkehr', 'ersatzbus', 'streckensperrung', 'sperrung',
                'gesperrt', 'vollsperrung']
+  # Dormant: ~0 posts/day outside strikes, so the dashboard hides it. Kept
+  # because a strike sends it from zero to hundreds overnight, the most urgent
+  # signal a communication team could get.
   strike:
     label: Strikes
     keywords: ['streik', 'warnstreik', 'gdl\b', 'evg\b', 'arbeitskampf', 'tarifverhandl',
                'tarifstreit']
-  service_cleanliness:
-    label: Service, cleanliness & comfort
-    keywords: ['klos?\b', 'toilette', 'wc\b', 'klima', 'heizung', 'wlan', 'wifi', 'w-lan',
-               'internet', 'funkloch', 'empfang', 'dreckig', 'schmutz', 'sauber', 'stinkt',
-               'personal', 'zugbegleit', 'schaffner', '(un)?freundlich', 'durchsage',
-               'bordbistro', 'speisewagen', 'aufzug', 'fahrstuhl', 'barrierefrei', 'rollstuhl']
   other:
     label: Other / general
     keywords: []

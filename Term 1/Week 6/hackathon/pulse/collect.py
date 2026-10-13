@@ -177,6 +177,9 @@ class Filters:
             return "backdated"
         return None
 
+    def topics_for(self, text: str) -> str:
+        return json.dumps([k for k, rx in self.topics.items() if rx.search(text)] or ["other"])
+
     def to_item(self, p: dict, query: str, fetched_at: str) -> dict:
         rec, text = p["record"], p["record"]["text"].strip()
         links = [feat["uri"] for fc in rec.get("facets") or [] for feat in fc.get("features") or [] if feat.get("uri")]
@@ -194,8 +197,21 @@ class Filters:
             "lang": ",".join(rec.get("langs") or []) or None,
             "query": query,
             "kind": "news" if is_news else "personal",
-            "topics": json.dumps([k for k, rx in self.topics.items() if rx.search(text)] or ["other"]),
+            "topics": self.topics_for(text),
         }
+
+
+def retag(conn: sqlite3.Connection, cfg: dict) -> None:
+    """Recompute every item's topics from the current config.yaml, so stored
+    tags never lag behind edited keyword lists or merged topics. A regex pass
+    over a few thousand short texts takes well under a second."""
+    filters = Filters(cfg)
+    changed = [(t, i) for i, text, old in conn.execute("SELECT id, text, topics FROM items")
+               if (t := filters.topics_for(text)) != old]
+    if changed:
+        with conn:
+            conn.executemany("UPDATE items SET topics = ? WHERE id = ?", changed)
+        log.info("retagged %d items", len(changed))
 
 
 def fetch_and_store(conn: sqlite3.Connection, cfg: dict, errors: list[str]) -> tuple[int, int, bool]:
@@ -315,6 +331,7 @@ def main() -> int:
     errors, fetched, new, ok = [], 0, 0, False
     try:
         fetched, new, ok = fetch_and_store(conn, cfg, errors)
+        retag(conn, cfg)
         if not ok:
             errors.append("all queries failed")
         classify_pending(conn, cfg, errors)

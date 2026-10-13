@@ -24,7 +24,7 @@ own recent baseline, and which posts are behind it?**
 **Example from our data:** TODO (recompute from the final dataset when the project is final):
 negative share per topic, e.g. delays vs. all personal posts, and one topic flagged as unreliable
 because of a low count. In the test run, delay posts were 63% negative against 44% across all
-personal posts, and crowding showed 70% on only 20 posts.
+personal posts.
 
 ## 2. The stream and Bluesky's terms of use
 - **Source:** Bluesky search (`app.bsky.feed.searchPosts`, `sort=latest`) with 29 German queries
@@ -151,6 +151,12 @@ Streamlit Cloud can't install requirements from a path containing spaces.
   status ▲ above / ● around / ▼ below / ◌ too few posts / ◌ no baseline yet.
 - **One chart per topic:** negative share per day (or hour, last 48 h), baseline dashed, `n=`
   next to every daily point. Points with fewer than 10 posts are hollow grey.
+- **Topics:** delays & cancellations, app & tickets, construction & replacement buses, on-board
+  experience, other. Crowding and service were merged into "on-board experience" because each
+  got only ~6 personal posts a day, so their daily points never reached the 10-post minimum.
+  *Strikes* is dormant (~0 posts a day) and appears only when there are strike posts, which is
+  exactly when it matters. Topics are recomputed from `config.yaml` on every run, so stored tags
+  always match the current keyword lists.
 - **Toggles:** daily/hourly, personal/news/both (personal by default), Model 1/Model 2.
 - **Posts behind a point:** pick a day and topic for time, text, label, confidence and link.
 - **Baseline:** pooled negative share over the previous 7 days, excluding the current period
