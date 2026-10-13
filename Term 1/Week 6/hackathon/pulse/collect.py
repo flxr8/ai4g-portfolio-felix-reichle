@@ -7,8 +7,9 @@ with INSERT OR IGNORE. Posts are stored before they are classified, so a model
 failure never loses data; unlabelled rows are picked up by the next run.
 Every run is logged in `runs`, which is what proves continuous operation.
 
-Privacy: author data (handle, display name, labels) is only looked at in
-memory to spot bots. The schema has no column for it.
+Privacy (brief: "store only text, time and derived fields; no handles, DIDs"):
+author data (handle, display name, labels) is only looked at in memory to spot
+bots, and no post URL is stored, because Bluesky URLs contain the author's DID.
 """
 from __future__ import annotations
 
@@ -35,8 +36,7 @@ log = logging.getLogger("pulse")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS items (
-    id TEXT PRIMARY KEY,          -- sha256 of the at:// URI
-    url TEXT,                     -- link to the post (contains the author's DID)
+    id TEXT PRIMARY KEY,          -- sha256 of the at:// URI (not reversible to the author)
     created_at TEXT NOT NULL,     -- UTC, when posted
     fetched_at TEXT NOT NULL,     -- UTC, when collected
     text TEXT NOT NULL,
@@ -79,6 +79,13 @@ def connect(path: Path = DB_PATH) -> sqlite3.Connection:
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path, timeout=30)
     conn.executescript(SCHEMA)
+    # Migration: databases from before 13 Oct stored post URLs (with the
+    # author's DID). Drop the column, then VACUUM so the old values are really
+    # gone from the file and not just marked as free pages.
+    if "url" in {r[1] for r in conn.execute("PRAGMA table_info(items)")}:
+        conn.execute("ALTER TABLE items DROP COLUMN url")
+        conn.commit()
+        conn.execute("VACUUM")
     return conn
 
 
@@ -131,7 +138,6 @@ class Filters:
         self.news = cfg["news_domains"]
         self.topics = {k: re.compile("|".join(r"\b" + w for w in t["keywords"]), re.I)
                        for k, t in cfg["topics"].items() if t["keywords"]}
-        self.store_url = cfg.get("store_post_url", True)
 
     @staticmethod
     def template(text: str) -> str:
@@ -187,10 +193,8 @@ class Filters:
         links += [e["external"]["uri"] for e in (embed, embed.get("media") or {}) if e.get("external", {}).get("uri")]
         hosts = {(urlparse(u).hostname or "").lower().removeprefix("www.") for u in links}
         is_news = any(h == d or h.endswith("." + d) for h in hosts for d in self.news)
-        did, _, rkey = p["uri"].removeprefix("at://").split("/")
         return {
             "id": hashlib.sha256(p["uri"].encode()).hexdigest(),
-            "url": f"https://bsky.app/profile/{did}/post/{rkey}" if self.store_url else None,
             "created_at": parse_ts(rec.get("createdAt") or p["indexedAt"]).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "fetched_at": fetched_at,
             "text": text,
@@ -256,8 +260,8 @@ def fetch_and_store(conn: sqlite3.Connection, cfg: dict, errors: list[str]) -> t
     with conn:  # items and watermarks are saved together or not at all
         before = conn.total_changes
         conn.executemany(
-            "INSERT OR IGNORE INTO items (id, url, created_at, fetched_at, text, lang, query, kind, topics) "
-            "VALUES (:id, :url, :created_at, :fetched_at, :text, :lang, :query, :kind, :topics)", items)
+            "INSERT OR IGNORE INTO items (id, created_at, fetched_at, text, lang, query, kind, topics) "
+            "VALUES (:id, :created_at, :fetched_at, :text, :lang, :query, :kind, :topics)", items)
         new = conn.total_changes - before
         conn.executemany(
             "INSERT INTO query_state VALUES (?, ?) ON CONFLICT(query) DO UPDATE SET newest_indexed = excluded.newest_indexed",

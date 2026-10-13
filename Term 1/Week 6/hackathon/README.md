@@ -165,15 +165,19 @@ Streamlit Cloud can't install requirements from a path containing spaces.
   `sentencepiece` package, outside our agreed dependencies.
 
 ## 9. Ethics
-- **Data minimisation:** only text, timestamps and derived fields. No handles, DIDs, names or
-  profile data. Author info is used in memory to detect bots, then discarded.
-- **Exception: the post URL** contains the author's DID. We keep it so readers can check
-  context (`store_post_url: false` turns it off).
-- **Public repo:** the database is published on the `bahn-puls-data` branch. Posts are public on
-  Bluesky, but republishing them in bulk is a different act; the branch should be deleted or made
-  private once collection stops after grading.
-- **TODO (team), decide before submission:** commit the full database, or only aggregates plus
-  the 50 labelled posts with their URLs removed (and `store_post_url: false` from then on).
+- **Data minimisation:** only text, timestamps and derived fields, as the brief requires. No
+  handles, DIDs, names or profile data. Author info is used in memory to detect bots, then
+  discarded. The item id is a sha256 hash of the post URI, which can't be reversed to an author.
+- **No post URLs (decided 13 Oct).** A Bluesky URL contains the author's DID
+  (`bsky.app/profile/did:plc:…`), so storing it would break the brief's "no DIDs" rule. The
+  collector stores none; databases from before that date are migrated on the next run (column
+  dropped, file vacuumed so the old values are really gone), and the URLs were removed from the
+  labelled sample. The dashboard still lets readers open the posts behind a point: it shows their
+  full text. Post texts can themselves contain links that people wrote (e.g. to another post);
+  we keep the text as written.
+- **What we publish:** the full database (texts, timestamps, labels), committed when the project
+  is final, so every number can be re-checked. While collection runs, the live copy is on the
+  public `bahn-puls-data` branch; it should be deleted once collection stops after grading.
 - **Deletions:** Bluesky's guidelines require services to delete content that users have asked
   to have deleted. We don't re-check whether stored posts were deleted, so we only partly meet
   this (acceptable for a one-week dataset, not for long-term use). Anyone who asks us to remove a

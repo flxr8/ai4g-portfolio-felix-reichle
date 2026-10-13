@@ -135,10 +135,9 @@ topic = d2.selectbox("Topic", list(TOPICS), format_func=TOPICS.get)
 posts = sel[(sel.created_at.dt.floor("D") == day) & (sel.topics.map(lambda ts: topic == "all" or topic in ts))].sort_values("created_at")
 st.caption(f"{len(posts)} posts · {(posts[f'{model}_label'] == 'negative').sum()} negative · times in Berlin time")
 st.dataframe(pd.DataFrame({"Time": posts.created_at.dt.strftime("%H:%M"), "Text (original German)": posts.text,
-                           "Label": posts[f"{model}_label"], "Confidence": posts[f"{model}_score"], "Link": posts.url}),
+                           "Label": posts[f"{model}_label"], "Confidence": posts[f"{model}_score"]}),
              hide_index=True, width="stretch",
-             column_config={"Confidence": st.column_config.ProgressColumn(min_value=0, max_value=1, format="%.2f"),
-                            "Link": st.column_config.LinkColumn(display_text="open")})
+             column_config={"Confidence": st.column_config.ProgressColumn(min_value=0, max_value=1, format="%.2f")})
 st.caption("No translation: the open local de→en model needs the `sentencepiece` package, outside our agreed dependencies. "
            "Do not use this to judge individual staff, to rank lines on a handful of posts, or to claim a problem is "
            "solved because posting stopped.")

@@ -31,7 +31,7 @@ SYSTEMS = {"m1": "Model 1 (german-sentiment-bert)", "m2": "Model 2 (twitter-xlm-
 def sample(n: int = 50, seed: int = 42) -> None:
     """Round-robin over (topic, kind) strata, so rare strata like strike/news
     are represented instead of the sample being all personal/other."""
-    df = pd.read_sql("SELECT id, created_at, kind, topics, lang, text, url FROM items", sqlite3.connect(DB_PATH))
+    df = pd.read_sql("SELECT id, created_at, kind, topics, lang, text FROM items", sqlite3.connect(DB_PATH))
     df["stratum"] = df.topics.map(lambda t: next((x for x in json.loads(t) if x != "other"), "other")) + "/" + df.kind
     pools = {s: g.sample(frac=1, random_state=seed).index.tolist() for s, g in df.groupby("stratum")}
     picked = []
