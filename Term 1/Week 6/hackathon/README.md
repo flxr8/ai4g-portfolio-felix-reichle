@@ -2,6 +2,8 @@
 
 Hackathon, Term 1 Week 6 · SDG 9 (Industry, Innovation and Infrastructure) · pair project
 
+**Live dashboard: <https://pulse-deutsche-bahn.streamlit.app/>**
+
 ## 1. The problem
 **Why now:** Deutsche Bahn's reliability is at a historic low. In 2025 only 60.1% of
 long-distance trains arrived less than six minutes late, the worst value ever recorded (74.4%
@@ -152,6 +154,8 @@ uses [deploy/bahn-puls/streamlit_app.py](../../../deploy/bahn-puls/streamlit_app
 Streamlit Cloud can't install requirements from a path containing spaces.
 
 ## 8. Dashboard
+Live at <https://pulse-deutsche-bahn.streamlit.app/> (refreshes from the collector every 10 minutes),
+or locally with `streamlit run dashboard.py`.
 - **Topics against their baseline:** latest negative share per topic vs its baseline, with
   status ▲ above / ● around / ▼ below / ◌ too few posts / ◌ no baseline yet.
 - **One chart per topic:** negative share per day (or hour, last 48 h), baseline dashed, `n=`
