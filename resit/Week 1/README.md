@@ -80,9 +80,8 @@ A web app that teaches the Dutch words and phrases of academic life with flashca
 
 Progress is stored in the browser (`localStorage`): no account, no server, no personal data leaves the device.
 
-<!-- TODO: flow diagram or 3–4 screenshots: lesson → flashcard → quiz → review queue -->
 
-**Why the locks?** Quizzes open the day after a lesson is first studied, and higher levels open only after the level below is passed. This is deliberate: spread-out practice is remembered much longer than cramming in one session. To see the app as a student a few days in, switch on **Demo** (top right). Demo mode fills in realistic progress, so you see completed lessons, open quizzes, a review queue and earned badges; some higher levels are still locked, just as they would be for a real student at that point. The [demo video](TODO) shows what taking a quiz looks like in demo mode.
+**Why the locks?** Quizzes open the day after a lesson is first studied, and higher levels open only after the level below is passed. This is deliberate: spread-out practice is remembered much longer than cramming in one session. To see the app as a student a few days in, switch on **Demo** (top right). Demo mode fills in realistic progress, so you see completed lessons, open quizzes, a review queue and earned badges; some higher levels are still locked, just as they would be for a real student at that point. The demo video shows what taking a quiz looks like in demo mode.
 
 ### How Bolt was used
 
